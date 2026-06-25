@@ -14,7 +14,6 @@ export default function Footer() {
           <nav className="flex flex-col gap-4">
             <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Home</a>
             <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Type's Of plant's</a>
-            <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Contact</a>
             <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Privacy</a>
           </nav>
         </div>

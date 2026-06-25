@@ -17,7 +17,6 @@ export default function Layout() {
         />
         <Navbar
           logoImg={IMAGES.LOGO_PLANT}
-          searchIcon={IMAGES.SEARCH_ICON}
           onCartClick={() => setCartOpen(true)}
         />
         <Outlet />

@@ -4,11 +4,10 @@ import { useCart } from '../context/CartContext'
 
 interface NavbarProps {
   logoImg: string
-  searchIcon: string
   onCartClick: () => void
 }
 
-export default function Navbar({ logoImg, searchIcon, onCartClick }: NavbarProps) {
+export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
   const { totalItems } = useCart()
   const navigate = useNavigate()
   const location = useLocation()
@@ -63,7 +62,12 @@ export default function Navbar({ logoImg, searchIcon, onCartClick }: NavbarProps
       </nav>
 
       <div className="relative shrink-0">
-        <img src={searchIcon} alt="Search" className="w-[26px] h-[26px] opacity-75 cursor-pointer" />
+        <button onClick={() => navigate('/login')} className="bg-transparent border-none p-0 cursor-pointer">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </button>
       </div>
 
       <div className="relative ml-5 shrink-0">
