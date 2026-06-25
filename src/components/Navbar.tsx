@@ -30,14 +30,23 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
         scrolled ? 'backdrop-blur-md bg-[#0d1a0d]/60' : ''
       }`}
     >
-      <button onClick={() => navigate('/')} className="flex items-center gap-2 shrink-0 bg-transparent border-none p-0 cursor-pointer">
+      <button
+        onClick={() => {
+          if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
+          else navigate('/')
+        }}
+        className="flex items-center gap-2 shrink-0 bg-transparent border-none p-0 cursor-pointer"
+      >
         <img src={logoImg} alt="Planto plant icon" className="w-12 h-12 object-contain" />
         <span className="text-[28px] font-black opacity-75">Planto.</span>
       </button>
 
       <nav className="flex items-center gap-[clamp(24px,3.5vw,54px)] mx-auto opacity-75 max-sm:hidden">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => {
+            if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
+            else navigate('/')
+          }}
           className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap ${
             isHome ? 'text-white' : 'text-white/60 hover:text-white'
           }`}
@@ -53,7 +62,21 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
           Plants Type
         </button>
 
-        <button className="bg-transparent border-none p-0 cursor-pointer text-white/60 hover:text-white text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap">
+        <button
+          onClick={() => {
+            if (isHome) {
+              const footer = document.querySelector('footer')
+              footer?.scrollIntoView({ behavior: 'smooth' })
+            } else {
+              navigate('/')
+              setTimeout(() => {
+                const footer = document.querySelector('footer')
+                footer?.scrollIntoView({ behavior: 'smooth' })
+              }, 100)
+            }
+          }}
+          className="bg-transparent border-none p-0 cursor-pointer text-white/60 hover:text-white text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap"
+        >
           Contact
         </button>
         <button className="bg-transparent border-none p-0 cursor-pointer text-white/60 hover:text-white text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap">

@@ -1,4 +1,19 @@
+import { useNavigate, useLocation } from 'react-router-dom'
+
 export default function Footer() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
+  function scrollToTop() {
+    if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
+    else navigate('/')
+  }
+
+  function goToMarket() {
+    navigate('/market')
+  }
+
   return (
     <footer className="px-[7.5vw] pt-15 pb-12 border-t border-white/12 max-sm:px-5 max-sm:pt-10 max-sm:pb-8">
       <div className="grid grid-cols-[1fr_1fr_1.4fr] gap-[clamp(32px,5vw,80px)] items-start max-lg:grid-cols-1 max-lg:gap-10">
@@ -12,9 +27,15 @@ export default function Footer() {
         <div>
           <h4 className="text-[clamp(20px,1.8vw,28px)] font-extrabold text-white mb-5">Quick Link's</h4>
           <nav className="flex flex-col gap-4">
-            <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Home</a>
-            <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Type's Of plant's</a>
-            <a href="#" className="text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">Privacy</a>
+            <button onClick={scrollToTop} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+              Home
+            </button>
+            <button onClick={goToMarket} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+              Type's Of plant's
+            </button>
+            <button className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+              Privacy
+            </button>
           </nav>
         </div>
 
