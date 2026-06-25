@@ -1,3 +1,4 @@
+import { useCart } from '../context/CartContext'
 import StarRating from './StarRating'
 
 interface HeroReviewerProps {
@@ -29,6 +30,7 @@ interface GlassCardProps {
 }
 
 function GlassCard({ img, alt, category, name }: GlassCardProps) {
+  const { addItem } = useCart()
   return (
     <div className="relative w-[clamp(320px,30vw,512px)] shrink-0 mt-[-20px] max-lg:w-[min(420px,90vw)] max-lg:mt-15">
       <img
@@ -70,7 +72,10 @@ function GlassCard({ img, alt, category, name }: GlassCardProps) {
         <div className="absolute bottom-[10%] left-[10%] flex flex-col gap-2 z-2">
           <span className="text-[clamp(14px,1.4vw,23px)] font-normal opacity-75">{category}</span>
           <span className="text-[clamp(20px,2.2vw,38px)] font-normal opacity-75">{name}</span>
-          <button className="inline-flex items-center justify-center min-w-[180px] h-14 border-2 border-white rounded-xl bg-transparent text-white text-2xl font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 mt-3">
+          <button
+            onClick={() => addItem(name, 'Rs. 359/-', img)}
+            className="inline-flex items-center justify-center min-w-[180px] h-14 border-2 border-white rounded-xl bg-transparent text-white text-2xl font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 mt-3"
+          >
             Buy Now
           </button>
         </div>

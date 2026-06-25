@@ -1,11 +1,31 @@
+import { useEffect, useState } from 'react'
+import { useCart } from '../context/CartContext'
+
 interface NavbarProps {
   logoImg: string
   searchIcon: string
+  onCartClick: () => void
 }
 
-export default function Navbar({ logoImg, searchIcon }: NavbarProps) {
+export default function Navbar({ logoImg, searchIcon, onCartClick }: NavbarProps) {
+  const { totalItems } = useCart()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 0)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="flex items-center px-[7.5vw] h-[110px] max-sm:px-5 max-sm:h-20">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center px-[7.5vw] h-[110px] max-sm:px-5 max-sm:h-20 transition-all duration-300 ${
+        scrolled ? 'backdrop-blur-md bg-[#0d1a0d]/60' : ''
+      }`}
+    >
       <div className="flex items-center gap-2 shrink-0">
         <img src={logoImg} alt="Planto plant icon" className="w-12 h-12 object-contain" />
         <span className="text-[28px] font-black opacity-75">Planto.</span>
@@ -17,9 +37,9 @@ export default function Navbar({ logoImg, searchIcon }: NavbarProps) {
         </a>
         <a href="#" className="text-white no-underline text-[clamp(16px,1.4vw,24px)] font-medium flex items-center gap-1.5 whitespace-nowrap">
           Plants Type
-          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" aria-hidden="true" className="mt-0.5">
+          {/* <svg width="12" height="7" viewBox="0 0 12 7" fill="none" aria-hidden="true" className="mt-0.5">
             <path d="M6 7L0.803847 1.75L11.1962 1.75L6 7Z" fill="white" />
-          </svg>
+          </svg> */}
         </a>
         <a href="#" className="text-white no-underline text-[clamp(16px,1.4vw,24px)] font-medium flex items-center gap-1.5 whitespace-nowrap">
           More
@@ -27,9 +47,29 @@ export default function Navbar({ logoImg, searchIcon }: NavbarProps) {
         <a href="#" className="text-white no-underline text-[clamp(16px,1.4vw,24px)] font-medium flex items-center gap-1.5 whitespace-nowrap">
           Contact
         </a>
+        <a href="#" className="text-white no-underline text-[clamp(16px,1.4vw,24px)] font-medium flex items-center gap-1.5 whitespace-nowrap">
+          Blog
+        </a>
       </nav>
 
-      <img src={searchIcon} alt="Search" className="w-[26px] h-[26px] opacity-75 shrink-0 cursor-pointer" />
+      <div className="relative shrink-0">
+        <img src={searchIcon} alt="Search" className="w-[26px] h-[26px] opacity-75 cursor-pointer" />
+      </div>
+
+      <div className="relative ml-5 shrink-0">
+        <button onClick={onCartClick} className="relative bg-transparent border-none p-0 cursor-pointer">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          {totalItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-[#55B000] text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              {totalItems > 99 ? '99+' : totalItems}
+            </span>
+          )}
+        </button>
+      </div>
     </header>
   )
 }
