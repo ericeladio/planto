@@ -1,10 +1,49 @@
+import { useState, useCallback, useEffect } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import { O2_SLIDES } from '../constants'
+import type { O2Slide } from '../types'
+
 interface BestO2SectionProps {
-  o2Img: string
   arrowLeft: string
   arrowRight: string
 }
 
-export default function BestO2Section({ o2Img, arrowLeft, arrowRight }: BestO2SectionProps) {
+function SlideContent({ slide }: { slide: O2Slide }) {
+  return (
+    <div className="flex items-center min-h-[480px] max-lg:flex-col max-lg:p-10 max-lg:items-center">
+      <img
+        src={slide.img}
+        alt={slide.title}
+        className="relative w-[clamp(300px,38vw,580px)] h-auto object-contain shrink-0 -ml-[5%] -mt-15 -mb-5 z-2 pointer-events-none drop-shadow-[0_-60px_80px_rgba(0,0,0,0.17)_0_-20px_33px_rgba(0,0,0,0.12)] max-lg:w-[min(320px,70vw)] max-lg:m-0"
+      />
+      <div className="flex-1 min-w-0 px-[clamp(32px,5vw,80px)] py-12 pl-[clamp(24px,3vw,48px)] flex flex-col gap-7 z-2 max-lg:p-6 max-lg:items-center max-lg:text-center">
+        <h3 className="text-[clamp(22px,2.4vw,38px)] font-semibold text-white/75 leading-[1.3]">{slide.title}</h3>
+        {slide.texts.map((text, i) => (
+          <p key={i} className="text-[clamp(15px,1.4vw,28px)] font-semibold text-white/75 leading-[1.5]">{text}</p>
+        ))}
+        <button className="inline-flex items-center justify-center w-fit min-w-[221px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 opacity-75 max-lg:mx-auto max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
+          Explore
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 10000, stopOnInteraction: false })])
+  const [selectedIndex, setSelectedIndex] = useState(0)
+
+  const scrollPrev = useCallback(() => { if (emblaApi) emblaApi.scrollPrev() }, [emblaApi])
+  const scrollNext = useCallback(() => { if (emblaApi) emblaApi.scrollNext() }, [emblaApi])
+
+  useEffect(() => {
+    if (!emblaApi) return
+    function onSelect() { if (emblaApi) setSelectedIndex(emblaApi.selectedScrollSnap()) }
+    emblaApi.on('select', onSelect)
+    onSelect()
+  }, [emblaApi])
+
   return (
     <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20 max-sm:px-5 max-sm:pb-15">
       <div className="flex items-center gap-5 max-lg:justify-center">
@@ -35,44 +74,41 @@ export default function BestO2Section({ o2Img, arrowLeft, arrowRight }: BestO2Se
         </svg>
       </div>
 
-      <div className="relative rounded-[92px] border-3 border-white/44 bg-white/5 backdrop-blur-[20px] flex items-center min-h-[480px] overflow-visible max-lg:flex-col max-lg:rounded-[40px] max-lg:p-10 max-lg:items-center">
-        <img
-          src={o2Img}
-          alt="O2 plant"
-          className="relative w-[clamp(300px,38vw,580px)] h-auto object-contain shrink-0 -ml-[5%] -mt-15 -mb-5 z-2 pointer-events-none drop-shadow-[0_-60px_80px_rgba(0,0,0,0.17)_0_-20px_33px_rgba(0,0,0,0.12)] max-lg:w-[min(320px,70vw)] max-lg:m-0"
-        />
-        <div className="flex-1 min-w-0 px-[clamp(32px,5vw,80px)] py-12 pl-[clamp(24px,3vw,48px)] flex flex-col gap-7 z-2 max-lg:p-6 max-lg:items-center max-lg:text-center">
-          <h3 className="text-[clamp(22px,2.4vw,38px)] font-semibold text-white/75 leading-[1.3]">
-            We Have Small And Best O2 Plants Collection's
-          </h3>
-          <p className="text-[clamp(15px,1.4vw,28px)] font-semibold text-white/75 leading-[1.5]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua
-          </p>
-          <p className="text-[clamp(15px,1.4vw,28px)] font-semibold text-white/75 leading-[1.5]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-          </p>
-          <button className="inline-flex items-center justify-center w-fit min-w-[221px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 opacity-75 max-lg:mx-auto max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
-            Explore
-          </button>
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {O2_SLIDES.map((slide, i) => (
+            <div key={i} className="min-w-0 shrink-0 grow-0 basis-full">
+              <div className="relative rounded-[92px] border-3 border-white/44 bg-white/5 backdrop-blur-[20px] max-lg:rounded-[40px]">
+                <SlideContent slide={slide} />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="flex items-center justify-between max-lg:flex-col max-lg:gap-5">
         <div className="flex items-center justify-center gap-2 pt-2">
-          <span className="h-[6px] w-[21px] rounded-[46px] bg-white" />
-          <span className="h-[6px] w-[6px] rounded-[46px] bg-white" />
-          <span className="h-[6px] w-[6px] rounded-[46px] bg-white" />
+          {O2_SLIDES.map((_, i) => (
+            <span
+              key={i}
+              className={`h-[6px] rounded-[46px] bg-white transition-all duration-300 ${
+                i === selectedIndex ? 'w-[21px] opacity-100' : 'w-[6px] opacity-50'
+              }`}
+            />
+          ))}
         </div>
 
         <div className="flex items-center gap-4">
-          <img src={arrowLeft} alt="Previous" className="w-[25px] h-[25px] cursor-pointer opacity-75 transition-opacity hover:opacity-100" />
+          <button onClick={scrollPrev} className="cursor-pointer bg-transparent border-none p-0">
+            <img src={arrowLeft} alt="Previous" className="w-[25px] h-[25px] opacity-75 transition-opacity hover:opacity-100" />
+          </button>
           <span className="text-white/75 font-bold">
-            <span className="text-xl">01/</span>
-            <span className="text-[15px]">04</span>
+            <span className="text-xl">{String(selectedIndex + 1).padStart(2, '0')}/</span>
+            <span className="text-[15px]">{String(O2_SLIDES.length).padStart(2, '0')}</span>
           </span>
-          <img src={arrowRight} alt="Next" className="w-[25px] h-[25px] cursor-pointer opacity-75 transition-opacity hover:opacity-100" />
+          <button onClick={scrollNext} className="cursor-pointer bg-transparent border-none p-0">
+            <img src={arrowRight} alt="Next" className="w-[25px] h-[25px] opacity-75 transition-opacity hover:opacity-100" />
+          </button>
         </div>
       </div>
     </section>

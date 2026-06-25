@@ -32,7 +32,6 @@ function App() {
         <TopSelling plants={TOP_SELLING_PLANTS} bagIcon={IMAGES.CARD_BAG_ICON} />
         <CustomerReviews reviews={CUSTOMER_REVIEWS} />
         <BestO2Section
-          o2Img={IMAGES.O2_PLANT}
           arrowLeft={IMAGES.ARROW_LEFT}
           arrowRight={IMAGES.ARROW_RIGHT}
         />

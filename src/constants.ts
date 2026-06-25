@@ -1,4 +1,4 @@
-import type { Plant, Review, ProductPillData } from './types'
+import type { Plant, Review, ProductPillData, O2Slide } from './types'
 
 export const IMAGES = {
   LOGO_PLANT:
@@ -80,6 +80,33 @@ export const TOP_SELLING_PLANTS: Plant[] = [
     desc: 'Suculenta medicinal con gel hidratante, fácil de cuidar.',
     price: 'Rs. 349/-',
     img: 'https://api.builder.io/api/v1/image/assets/TEMP/5316816ff52ae9b3ef62af45bfce99cb08476b4c?width=918',
+  },
+]
+
+export const O2_SLIDES: O2Slide[] = [
+  {
+    img: 'https://api.builder.io/api/v1/image/assets/TEMP/fa3a58342254182b92a36092f9d4f5a0b11ecf6a?width=1789',
+    title: "We Have Small And Best O2 Plants Collection's",
+    texts: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+    ],
+  },
+  {
+    img: 'https://api.builder.io/api/v1/image/assets/TEMP/763dd970ada067132be533eb7ebccbde943dae86?width=1202',
+    title: 'Hosta — Pureza y Sombra',
+    texts: [
+      'Sus hojas anchas y texturizadas llenan de vida los espacios con poca luz. Una opción elegante y resistente.',
+      'Ideal para jardines sombríos o como planta de interior decorativa. Fácil cuidado y crecimiento lento.',
+    ],
+  },
+  {
+    img: 'https://api.builder.io/api/v1/image/assets/TEMP/e44f8798449db0c15aa91c37cdce7c11975284dd?width=1464',
+    title: 'Haworthia — Belleza Minimalista',
+    texts: [
+      'Pequeña suculenta con patrones rayados únicos. Perfecta para escritorios y espacios pequeños.',
+      'Requiere poca agua y luz indirecta. La compañera ideal para empezar tu colección de plantas.',
+    ],
   },
 ]
 

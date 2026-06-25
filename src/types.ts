@@ -27,3 +27,9 @@ export interface HeroGlassCardData {
   category: string
   name: string
 }
+
+export interface O2Slide {
+  img: string
+  title: string
+  texts: string[]
+}

@@ -2,7 +2,6 @@ interface CarouselDotsProps {
   activeIndex?: number
   count?: number
 }
-
 export default function CarouselDots({ activeIndex = 0, count = 3 }: CarouselDotsProps) {
   return (
     <div className="flex items-center justify-center gap-2 pt-2">
