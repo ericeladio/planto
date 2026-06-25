@@ -96,8 +96,7 @@ export default function HeroSection({ heroImg }: HeroSectionProps) {
           Breath Natureal
         </h1>
         <p className="text-[clamp(16px,1.4vw,23px)] font-medium opacity-75 leading-[1.5] max-w-[56ch] mb-11 max-lg:max-w-full">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua.
+          From root to petal, leaf to bloom — let nature breathe new life into every room.
         </p>
 
         <div className="flex items-center gap-8 mb-14 flex-wrap max-lg:justify-center">
@@ -117,7 +116,7 @@ export default function HeroSection({ heroImg }: HeroSectionProps) {
         <HeroReviewer
           name="alena Patel"
           rating={4.5}
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt..."
+          text="Every leaf you bring home is a breath of fresh air — start your green journey today."
         />
       </div>
 

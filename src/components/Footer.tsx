@@ -19,8 +19,7 @@ export default function Footer() {
       <div className="grid grid-cols-[1fr_1fr_1.4fr] gap-[clamp(32px,5vw,80px)] items-start max-lg:grid-cols-1 max-lg:gap-10">
         <div>
           <p className="text-[clamp(16px,1.4vw,24px)] font-medium text-white leading-[1.6] max-w-[42ch]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+           Where leaves whisper and roots take hold — we bring the quiet beauty of the earth into your home.
           </p>
         </div>
 
