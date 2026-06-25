@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage'
 import MarketPage from './pages/MarketPage'
 import LoginPage from './pages/LoginPage'
 import PrivacyPage from './pages/PrivacyPage'
+import BlogListPage from './pages/BlogListPage'
+import BlogPostPage from './pages/BlogPostPage'
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path="/market" element={<MarketPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

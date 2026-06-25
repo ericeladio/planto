@@ -79,7 +79,12 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
         >
           Contact
         </button>
-        <button className="bg-transparent border-none p-0 cursor-pointer text-white/60 hover:text-white text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap">
+        <button
+          onClick={() => navigate('/blog')}
+          className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap ${
+            location.pathname.startsWith('/blog') ? 'text-white' : 'text-white/60 hover:text-white'
+          }`}
+        >
           Blog
         </button>
       </nav>
