@@ -33,7 +33,7 @@ export default function Footer() {
             <button onClick={goToMarket} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
               Type's Of plant's
             </button>
-            <button className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+            <button onClick={() => navigate('/privacy')} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
               Privacy
             </button>
           </nav>
