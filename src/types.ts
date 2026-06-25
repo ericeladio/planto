@@ -3,6 +3,8 @@ export interface Plant {
   desc: string
   price: string
   img: string
+  rating?: number
+  category?: string
 }
 
 export interface Review {
