@@ -37,8 +37,8 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
         }}
         className="flex items-center gap-2 shrink-0 bg-transparent border-none p-0 cursor-pointer"
       >
-        <img src={logoImg} alt="Planto plant icon" className="w-12 h-12 object-contain" />
-        <span className="text-[28px] font-black opacity-75">Planto.</span>
+        <img src={logoImg} alt="Planto plant icon" className="w-10 h-10 object-contain" />
+        <span className="text-2xl font-black opacity-75">Planto.</span>
       </button>
 
       <nav className="flex items-center gap-[clamp(24px,3.5vw,54px)] mx-auto opacity-75 max-sm:hidden">

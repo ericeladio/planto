@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import StarRating from './StarRating'
 
@@ -89,6 +90,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ heroImg }: HeroSectionProps) {
+  const navigate = useNavigate()
   return (
     <section className="flex items-start gap-[clamp(32px,4vw,80px)] px-[7.5vw] pb-20 pt-10 max-lg:flex-col max-lg:items-center max-lg:pb-15">
       <div className="flex-1 min-w-0 pt-15 max-lg:pt-5 max-lg:text-center">
@@ -100,7 +102,7 @@ export default function HeroSection({ heroImg }: HeroSectionProps) {
         </p>
 
         <div className="flex items-center gap-8 mb-14 flex-wrap max-lg:justify-center">
-          <button className="inline-flex items-center justify-center min-w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
+          <button onClick={() => navigate('/market')} className="inline-flex items-center justify-center min-w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
             Explore
           </button>
           <button className="flex items-center gap-[18px] bg-transparent border-none text-white/75 text-xl font-normal cursor-pointer font-[inherit]">

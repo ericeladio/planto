@@ -113,6 +113,7 @@ export const O2_SLIDES: O2Slide[] = [
 export const TRENDING_PRODUCTS: [ProductPillData, ProductPillData] = [
   {
     title: 'Hosta — Elegancia en Sombra',
+    slug: 'hosta-elegancia',
     desc: 'Hosta, conocida por su follaje exuberante en tonos verdes y dorados. Resistente y de bajo mantenimiento, embellece cualquier rincón sombreado.',
     price: 'Rs. 399/-',
     img: 'https://api.builder.io/api/v1/image/assets/TEMP/763dd970ada067132be533eb7ebccbde943dae86?width=1202',
@@ -121,6 +122,7 @@ export const TRENDING_PRODUCTS: [ProductPillData, ProductPillData] = [
   },
   {
     title: 'Haworthia — Suculenta de Moda',
+    slug: 'haworthia-minimalista',
     desc: 'Pequeña pero llamativa, la Haworthia luce rayas blancas únicas. Ideal para escritorios y espacios compactos con poca luz.',
     price: 'Rs. 299/-',
     img: 'https://api.builder.io/api/v1/image/assets/TEMP/e44f8798449db0c15aa91c37cdce7c11975284dd?width=1464',

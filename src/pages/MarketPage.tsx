@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import StarRating from '../components/StarRating'
 import { ALL_PLANTS } from '../data/plants'
 
 export default function MarketPage() {
   const { addItem } = useCart()
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('')
   const [page, setPage] = useState(1)
@@ -65,7 +67,10 @@ export default function MarketPage() {
         {paginated.map((plant, i) => (
           <article
             key={i}
-            className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] overflow-hidden transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+            onClick={() => {
+              if (plant.slug) navigate(`/plant/${plant.slug}`)
+            }}
+            className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] overflow-hidden transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer"
           >
             <div className="relative pt-[75%] overflow-hidden">
               <img
@@ -84,7 +89,10 @@ export default function MarketPage() {
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xl font-bold text-white">{plant.price}</span>
                 <button
-                  onClick={() => addItem(plant.name, plant.price, plant.img)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    addItem(plant.name, plant.price, plant.img)
+                  }}
                   className="px-4 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
                 >
                   Add to bag

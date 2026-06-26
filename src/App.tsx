@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import PrivacyPage from './pages/PrivacyPage'
 import BlogListPage from './pages/BlogListPage'
 import BlogPostPage from './pages/BlogPostPage'
+import PlantDetailPage from './pages/PlantDetailPage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/plant/:slug" element={<PlantDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
