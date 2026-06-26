@@ -1,4 +1,4 @@
-import type { Plant, Review, ProductPillData, O2Slide } from './types'
+import type { O2Slide } from './types'
 
 export const IMAGES = {
   LOGO_PLANT:
@@ -23,110 +23,8 @@ export const IMAGES = {
     'https://api.builder.io/api/v1/image/assets/TEMP/9ab8fa0d2ad0f76b4bb2040e01428dff6b091bec?width=50',
 } as const
 
-export const CUSTOMER_REVIEWS: Review[] = [
-  {
-    name: 'Maxn Raval',
-    rating: 4.5,
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,',
-    avatarColor: '#5a3a28',
-  },
-  {
-    name: 'venely k',
-    rating: 4.5,
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,',
-    avatarColor: '#7a4a3a',
-  },
-  {
-    name: 'Lii thakur',
-    rating: 4.5,
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,',
-    avatarColor: '#4a5a6a',
-  },
-]
 
-export const TOP_SELLING_PLANTS: Plant[] = [
-  {
-    name: 'Hosta',
-    desc: 'Planta de follaje vibrante, ideal para sombra y jardines húmedos.',
-    price: 'Rs. 399/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/d335a913dbba57246363adb5f6b65028d5a6abad?width=918',
-  },
-  {
-    name: 'Haworthia',
-    desc: 'Suculenta pequeña con hojas rayadas, perfecta para interiores.',
-    price: 'Rs. 299/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/c3deee742429635aa5bd0be3d16a82edce2457f3?width=918',
-  },
-  {
-    name: 'Cactus columnar',
-    desc: 'Cactus alto y esbelto que aporta un toque desértico y moderno.',
-    price: 'Rs. 459/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/31e5e608156f09389c0ac4e8bbdd7ff4b9fbb4be?width=918',
-  },
-  {
-    name: 'Monstera deliciosa',
-    desc: 'La clásica costilla de Adán con hojas grandes y frondosas.',
-    price: 'Rs. 599/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/12f34ae16439ae788c3fa31722bfa3b1a7a67fd9?width=918',
-  },
-  {
-    name: 'Strelitzia nicolai',
-    desc: 'Ave del paraíso gigante, hojas similares al banano para un look tropical.',
-    price: 'Rs. 799/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/b02a0413d3df262c6f931e3fa9ee7c1f1626f2f7?width=918',
-  },
-  {
-    name: 'Aloe vera',
-    desc: 'Suculenta medicinal con gel hidratante, fácil de cuidar.',
-    price: 'Rs. 349/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/5316816ff52ae9b3ef62af45bfce99cb08476b4c?width=918',
-  },
-]
 
-export const O2_SLIDES: O2Slide[] = [
-  {
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/fa3a58342254182b92a36092f9d4f5a0b11ecf6a?width=1789',
-    title: "We Have Small And Best O2 Plants Collection's",
-    texts: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
-    ],
-  },
-  {
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/763dd970ada067132be533eb7ebccbde943dae86?width=1202',
-    title: 'Hosta — Pureza y Sombra',
-    texts: [
-      'Sus hojas anchas y texturizadas llenan de vida los espacios con poca luz. Una opción elegante y resistente.',
-      'Ideal para jardines sombríos o como planta de interior decorativa. Fácil cuidado y crecimiento lento.',
-    ],
-  },
-  {
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/e44f8798449db0c15aa91c37cdce7c11975284dd?width=1464',
-    title: 'Haworthia — Belleza Minimalista',
-    texts: [
-      'Pequeña suculenta con patrones rayados únicos. Perfecta para escritorios y espacios pequeños.',
-      'Requiere poca agua y luz indirecta. La compañera ideal para empezar tu colección de plantas.',
-    ],
-  },
-]
 
-export const TRENDING_PRODUCTS: [ProductPillData, ProductPillData] = [
-  {
-    title: 'Hosta — Elegancia en Sombra',
-    slug: 'hosta-elegancia',
-    desc: 'Hosta, conocida por su follaje exuberante en tonos verdes y dorados. Resistente y de bajo mantenimiento, embellece cualquier rincón sombreado.',
-    price: 'Rs. 399/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/763dd970ada067132be533eb7ebccbde943dae86?width=1202',
-    imgAlt: 'Hosta plant',
-    ambientClass: 'tree',
-  },
-  {
-    title: 'Haworthia — Suculenta de Moda',
-    slug: 'haworthia-minimalista',
-    desc: 'Pequeña pero llamativa, la Haworthia luce rayas blancas únicas. Ideal para escritorios y espacios compactos con poca luz.',
-    price: 'Rs. 299/-',
-    img: 'https://api.builder.io/api/v1/image/assets/TEMP/e44f8798449db0c15aa91c37cdce7c11975284dd?width=1464',
-    imgAlt: 'Haworthia succulent',
-    ambientClass: 'glow',
-  },
-]
+
+

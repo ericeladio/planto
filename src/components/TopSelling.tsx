@@ -1,12 +1,24 @@
+import { useEffect, useState } from 'react'
+import { getTopSelling, toPlantFrontend } from '../services/api'
 import type { Plant } from '../types'
 import PlantCard from './PlantCard'
 
 interface TopSellingProps {
-  plants: Plant[]
   bagIcon: string
 }
 
-export default function TopSelling({ plants, bagIcon }: TopSellingProps) {
+export default function TopSelling({ bagIcon }: TopSellingProps) {
+  const [plants, setPlants] = useState<Plant[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    getTopSelling()
+      .then((data) => setPlants(data.map(toPlantFrontend)))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
+
   return (
     <section className="flex flex-col gap-14 px-[7.5vw] py-10 pb-[100px]">
       <div className="relative flex items-center justify-center px-12 py-4 w-fit mx-auto">
@@ -37,11 +49,25 @@ export default function TopSelling({ plants, bagIcon }: TopSellingProps) {
         </svg>
       </div>
 
-      <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
-        {plants.map((plant, i) => (
-          <PlantCard key={i} plant={plant} bagIcon={bagIcon} />
-        ))}
-      </div>
+      {loading && (
+        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="rounded-3xl border border-white/10 bg-white/5 animate-pulse pt-[42%]" />
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <p className="text-red-400 text-center">Failed to load top selling plants: {error}</p>
+      )}
+
+      {!loading && !error && (
+        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
+          {plants.map((plant, i) => (
+            <PlantCard key={i} plant={plant} bagIcon={bagIcon} />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

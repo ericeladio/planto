@@ -1,4 +1,4 @@
-import { IMAGES, TOP_SELLING_PLANTS, CUSTOMER_REVIEWS } from '../constants'
+import { IMAGES } from '../constants'
 import HeroSection from '../components/HeroSection'
 import TrendingPlants from '../components/TrendingPlants'
 import TopSelling from '../components/TopSelling'
@@ -13,8 +13,8 @@ export default function HomePage() {
       <div id="trending-trigger">
         <TrendingPlants bagIcon={IMAGES.BAG_ICON} />
       </div>
-      <TopSelling plants={TOP_SELLING_PLANTS} bagIcon={IMAGES.CARD_BAG_ICON} />
-      <CustomerReviews reviews={CUSTOMER_REVIEWS} />
+      <TopSelling bagIcon={IMAGES.CARD_BAG_ICON} />
+      <CustomerReviews />
       <BestO2Section arrowLeft={IMAGES.ARROW_LEFT} arrowRight={IMAGES.ARROW_RIGHT} />
       <Footer />
     </main>
