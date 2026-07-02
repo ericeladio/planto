@@ -267,6 +267,24 @@ export function logout(): void {
   clearToken()
 }
 
+// ─── Password Reset ──────────────────────────────────────────────────────────
+
+export function forgotPassword(email: string): Promise<{ message: string }> {
+  return request<{ message: string }>('/api/auth/forgot-password', {
+    method: 'POST',
+    body: { email },
+  })
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<TokenResponse> {
+  const data = await request<TokenResponse>('/api/auth/reset-password', {
+    method: 'POST',
+    body: { token, new_password: newPassword },
+  })
+  setToken(data.access_token)
+  return data
+}
+
 // ─── Cart ────────────────────────────────────────────────────────────────────
 
 export function getCart(): Promise<CartResponse> {

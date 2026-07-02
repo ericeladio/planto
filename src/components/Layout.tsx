@@ -1,12 +1,16 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { CartProvider } from '../context/CartContext'
+import { AuthProvider } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import Navbar from './Navbar'
 import CartPage from './CartPage'
 import { IMAGES } from '../constants'
 
-export default function Layout() {
+function LayoutInner() {
   const [cartOpen, setCartOpen] = useState(false)
+  const { user, loading } = useAuth()
+  const navigate = useNavigate()
 
   return (
     <CartProvider>
@@ -17,11 +21,27 @@ export default function Layout() {
         />
         <Navbar
           logoImg={IMAGES.LOGO_PLANT}
-          onCartClick={() => setCartOpen(true)}
+          onCartClick={() => {
+            if (user) {
+              setCartOpen(true)
+            } else {
+              navigate('/login')
+            }
+          }}
+          user={user}
+          loading={loading}
         />
         <Outlet />
       </div>
       <CartPage isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </CartProvider>
+  )
+}
+
+export default function Layout() {
+  return (
+    <AuthProvider>
+      <LayoutInner />
+    </AuthProvider>
   )
 }

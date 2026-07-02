@@ -38,7 +38,7 @@ export default function CartPage({ isOpen, onClose }: CartPageProps) {
             <>
               <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
                 {items.map((item) => (
-                  <div key={item.name} className="flex gap-4 bg-white/5 rounded-2xl p-4 border border-white/10">
+                  <div key={item.id} className="flex gap-4 bg-white/5 rounded-2xl p-4 border border-white/10">
                     <img
                       src={item.img}
                       alt={item.name}
@@ -51,20 +51,20 @@ export default function CartPage({ isOpen, onClose }: CartPageProps) {
                       </div>
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => updateQuantity(item.name, -1)}
+                          onClick={() => updateQuantity(item.id, -1)}
                           className="w-8 h-8 rounded-lg border border-white/20 bg-transparent text-white text-lg cursor-pointer hover:bg-white/10 transition-colors flex items-center justify-center"
                         >
                           &minus;
                         </button>
                         <span className="text-white font-medium w-6 text-center">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.name, 1)}
+                          onClick={() => updateQuantity(item.id, 1)}
                           className="w-8 h-8 rounded-lg border border-white/20 bg-transparent text-white text-lg cursor-pointer hover:bg-white/10 transition-colors flex items-center justify-center"
                         >
                           +
                         </button>
                         <button
-                          onClick={() => removeItem(item.name)}
+                          onClick={() => removeItem(item.id)}
                           className="ml-auto text-white/50 hover:text-red-400 text-sm cursor-pointer bg-transparent border-none transition-colors"
                         >
                           Remove

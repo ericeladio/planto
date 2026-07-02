@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import StarRating from './StarRating'
+import type { PlantOut } from '../services/api'
+
 
 interface HeroReviewerProps {
   name: string
@@ -26,12 +29,29 @@ function HeroReviewer({ name, rating, text }: HeroReviewerProps) {
 interface GlassCardProps {
   img: string
   alt: string
-  category: string
-  name: string
+  category: string | null
+  name: string | null
+}
+
+const FALLBACK_PLANT = {
+  image_url: '',
+  category: 'Trendy House Plant',
+  name: 'Calathea plant',
 }
 
 function GlassCard({ img, alt, category, name }: GlassCardProps) {
   const { addItem } = useCart()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const handleBuy = () => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+    addItem(0, name ?? 'Plant', 'Rs. 359/-', img)
+  }
+
   return (
     <div className="relative w-[clamp(320px,30vw,512px)] shrink-0 mt-[-20px] max-lg:w-[min(420px,90vw)] max-lg:mt-15">
       <img
@@ -74,7 +94,7 @@ function GlassCard({ img, alt, category, name }: GlassCardProps) {
           <span className="text-[clamp(14px,1.4vw,23px)] font-normal opacity-75">{category}</span>
           <span className="text-[clamp(20px,2.2vw,38px)] font-normal opacity-75">{name}</span>
           <button
-            onClick={() => addItem(name, 'Rs. 359/-', img)}
+            onClick={handleBuy}
             className="inline-flex items-center justify-center min-w-[180px] h-14 border-2 border-white rounded-xl bg-transparent text-white text-2xl font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 mt-3"
           >
             Buy Now
@@ -87,10 +107,12 @@ function GlassCard({ img, alt, category, name }: GlassCardProps) {
 
 interface HeroSectionProps {
   heroImg: string
+  plant?: PlantOut
 }
 
-export default function HeroSection({ heroImg }: HeroSectionProps) {
+export default function HeroSection({ heroImg, plant }: HeroSectionProps) {
   const navigate = useNavigate()
+  const p = plant ?? FALLBACK_PLANT
   return (
     <section className="flex items-start gap-[clamp(32px,4vw,80px)] px-[7.5vw] pb-20 pt-10 max-lg:flex-col max-lg:items-center max-lg:pb-15">
       <div className="flex-1 min-w-0 pt-15 max-lg:pt-5 max-lg:text-center">
@@ -123,10 +145,10 @@ export default function HeroSection({ heroImg }: HeroSectionProps) {
       </div>
 
       <GlassCard
-        img={heroImg}
-        alt="Calathea plant"
-        category="Trendy House Plant"
-        name="Calathea plant"
+        img={p.image_url ?? heroImg}
+        alt={p.name ?? 'Plant'}
+        category={p.category}
+        name={p.name}
       />
     </section>
   )

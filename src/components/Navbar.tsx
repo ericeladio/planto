@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
+import type { UserOut } from '../services/api'
 
 interface NavbarProps {
   logoImg: string
   onCartClick: () => void
+  user: UserOut | null
+  loading: boolean
 }
 
-export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
+export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarProps) {
   const { totalItems } = useCart()
+  const { logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const isHome = location.pathname === '/'
 
@@ -23,6 +29,10 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location])
 
   return (
     <header
@@ -64,15 +74,14 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
 
         <button
           onClick={() => {
-            if (isHome) {
-              const footer = document.querySelector('footer')
-              footer?.scrollIntoView({ behavior: 'smooth' })
-            } else {
+            const footer = document.querySelector('footer')
+            if (footer) {
+              footer.scrollIntoView({ behavior: 'smooth' })
+            } else if (!isHome) {
               navigate('/')
               setTimeout(() => {
-                const footer = document.querySelector('footer')
-                footer?.scrollIntoView({ behavior: 'smooth' })
-              }, 100)
+                document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' })
+              }, 300)
             }
           }}
           className="bg-transparent border-none p-0 cursor-pointer text-white/60 hover:text-white text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap"
@@ -89,16 +98,42 @@ export default function Navbar({ logoImg, onCartClick }: NavbarProps) {
         </button>
       </nav>
 
-      <div className="relative shrink-0">
-        <button onClick={() => navigate('/login')} className="bg-transparent border-none p-0 cursor-pointer">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </button>
-      </div>
+      <div className="flex items-center gap-4 shrink-0">
+        {loading ? (
+          <div className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+        ) : user ? (
+          <div className="relative">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="bg-transparent border-none p-0 cursor-pointer"
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#55B000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-white/10 bg-[#1a3a1a] backdrop-blur-[12px] py-2 shadow-xl">
+                <p className="px-4 py-2 text-sm text-white/50 truncate">{user.email}</p>
+                <hr className="border-white/10" />
+                <button
+                  onClick={() => { logout(); navigate('/') }}
+                  className="w-full text-left px-4 py-2 text-sm text-white/75 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button onClick={() => navigate('/login')} className="bg-transparent border-none p-0 cursor-pointer">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+        )}
 
-      <div className="relative ml-5 shrink-0">
         <button onClick={onCartClick} className="relative bg-transparent border-none p-0 cursor-pointer">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75">
             <circle cx="9" cy="21" r="1" />

@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import type { Plant } from '../types'
+import { getPlantId } from '../utils/plantId'
 
 interface PlantCardProps {
   plant: Plant
@@ -8,6 +11,17 @@ interface PlantCardProps {
 
 export default function PlantCard({ plant, bagIcon }: PlantCardProps) {
   const { addItem } = useCart()
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const handleAddToCart = () => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.img)
+  }
+
   return (
     <article className="relative pt-[42%] flex flex-col">
       <img
@@ -21,7 +35,7 @@ export default function PlantCard({ plant, bagIcon }: PlantCardProps) {
         <div className="flex items-center justify-between mt-1">
           <span className="text-[clamp(20px,2.2vw,38px)] font-normal text-white/75">{plant.price}</span>
           <button
-            onClick={() => addItem(plant.name, plant.price, plant.img)}
+            onClick={handleAddToCart}
             className="inline-flex items-center justify-center w-[clamp(40px,3.5vw,55px)] h-[clamp(40px,3.5vw,55px)] border-2 border-white/75 rounded-xl bg-transparent cursor-pointer opacity-75 transition-[background] hover:bg-white/10 shrink-0"
             aria-label="Add to bag"
           >

@@ -1,12 +1,23 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { ALL_PLANTS } from '../data/plants'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/StarRating'
+import { getPlantId } from '../utils/plantId'
 
 export default function PlantDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { addItem } = useCart()
+  const { user } = useAuth()
+
+  const handleAddToCart = () => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+    addItem(getPlantId(plant!.slug), plant!.name, plant!.price, plant!.img)
+  }
 
   const plant = ALL_PLANTS.find((p) => p.slug === slug)
 
@@ -64,7 +75,7 @@ export default function PlantDetailPage() {
             <p className="text-white/60 leading-[1.7] text-base">{plant.desc}</p>
 
             <button
-              onClick={() => addItem(plant.name, plant.price, plant.img)}
+              onClick={handleAddToCart}
               className="self-start px-8 py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity"
             >
               Add to Bag

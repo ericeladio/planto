@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { IMAGES } from '../constants'
 import HeroSection from '../components/HeroSection'
 import TrendingPlants from '../components/TrendingPlants'
@@ -5,11 +6,21 @@ import TopSelling from '../components/TopSelling'
 import CustomerReviews from '../components/CustomerReviews'
 import BestO2Section from '../components/BestO2Section'
 import Footer from '../components/Footer'
+import { getTrending } from '../services/api'
+import type { PlantOut } from '../services/api'
 
 export default function HomePage() {
+  const [trending, setTrending] = useState<PlantOut | null>(null)
+
+  useEffect(() => {
+    getTrending().then((plants) => {
+      if (plants.length > 0) setTrending(plants[0])
+    })
+  }, [])
+
   return (
     <main className="pt-[110px] max-sm:pt-20">
-      <HeroSection heroImg={IMAGES.HERO_PLANT} />
+      <HeroSection heroImg={IMAGES.HERO_PLANT} plant={trending ?? undefined} />
       <div id="trending-trigger">
         <TrendingPlants bagIcon={IMAGES.BAG_ICON} />
       </div>

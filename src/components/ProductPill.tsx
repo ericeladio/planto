@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import type { ProductPillData } from '../types'
+import { getPlantId } from '../utils/plantId'
 
 interface ProductPillProps {
   data: ProductPillData
@@ -10,7 +12,16 @@ interface ProductPillProps {
 
 export default function ProductPill({ data, bagIcon, reverse = false }: ProductPillProps) {
   const { addItem } = useCart()
+  const { user } = useAuth()
   const navigate = useNavigate()
+
+  const handleAddToCart = () => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+    addItem(getPlantId(data.slug), data.title, data.price, data.img)
+  }
   const ambientStyles: Record<ProductPillData['ambientClass'], string> = {
     tree: 'before:content-[""] before:absolute before:top-[-30%] before:left-[15%] before:w-[40%] before:h-[200%] before:bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(30,80,20,0.6)_0%,transparent_70%)] before:blur-[40px]',
     glow: 'before:content-[""] before:absolute before:top-[-40%] before:left-[20%] before:w-[30%] before:h-[200%] before:bg-[radial-gradient(ellipse_50%_90%_at_50%_30%,rgba(60,160,40,0.45)_0%,rgba(30,80,20,0.2)_50%,transparent_80%)] before:blur-[48px]',
@@ -50,7 +61,7 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
             Explore
           </button>
           <button
-            onClick={() => addItem(data.title, data.price, data.img)}
+            onClick={handleAddToCart}
             className="inline-flex items-center justify-center w-16 h-16 border-2 border-white rounded-xl bg-transparent cursor-pointer transition-[background] hover:bg-white/8" aria-label="Add to bag"
           >
             <img src={bagIcon} alt="" width="34" height="34" />

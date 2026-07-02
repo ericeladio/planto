@@ -1,11 +1,15 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/StarRating'
 import { ALL_PLANTS } from '../data/plants'
+import { getPlantId } from '../utils/plantId'
+import Footer from '../components/Footer'
 
 export default function MarketPage() {
   const { addItem } = useCart()
+  const { user } = useAuth()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('')
@@ -32,7 +36,8 @@ export default function MarketPage() {
   const paginated = filtered.slice((page - 1) * perPage, page * perPage)
 
   return (
-    <section className="pt-[150px] px-[7.5vw] pb-20 max-sm:pt-[120px] max-sm:px-5 max-sm:pb-15">
+    <>
+      <section className="pt-[150px] px-[7.5vw] pb-20 max-sm:pt-[120px] max-sm:px-5 max-sm:pb-15">
       <h1 className="text-[clamp(32px,3.4vw,55px)] font-semibold text-white mb-8">Plants Market</h1>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -91,7 +96,11 @@ export default function MarketPage() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    addItem(plant.name, plant.price, plant.img)
+                    if (!user) {
+                      navigate('/login')
+                      return
+                    }
+                    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.img)
                   }}
                   className="px-4 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
                 >
@@ -135,6 +144,8 @@ export default function MarketPage() {
         </div>
       )}
     </section>
+      <Footer />
+    </>
   )
 }
 
