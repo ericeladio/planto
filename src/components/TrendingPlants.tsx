@@ -3,6 +3,7 @@ import { getTrending, toPlantFrontend } from '../services/api'
 import type { Plant } from '../types'
 import SectionHeader from './SectionHeader'
 import ProductPill from './ProductPill'
+import ProductPillSkeleton from './ProductPillSkeleton'
 import CarouselDots from './CarouselDots'
 
 interface TrendingPlantsProps {
@@ -25,8 +26,8 @@ export default function TrendingPlants({ bagIcon }: TrendingPlantsProps) {
     return (
       <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20">
         <SectionHeader title="Our Trendy plants" gradientPrefix="trend" />
-        <div className="rounded-[151px] border-2 border-white/10 bg-white/5 animate-pulse h-[360px]" />
-        <div className="rounded-[151px] border-2 border-white/10 bg-white/5 animate-pulse h-[360px]" />
+        <ProductPillSkeleton />
+        <ProductPillSkeleton />
       </section>
     )
   }

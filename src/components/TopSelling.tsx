@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getTopSelling, toPlantFrontend } from '../services/api'
 import type { Plant } from '../types'
 import PlantCard from './PlantCard'
+import PlantCardSkeleton from './PlantCardSkeleton'
 
 interface TopSellingProps {
   bagIcon: string
@@ -52,7 +53,7 @@ export default function TopSelling({ bagIcon }: TopSellingProps) {
       {loading && (
         <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-3xl border border-white/10 bg-white/5 animate-pulse pt-[42%]" />
+            <PlantCardSkeleton key={i} />
           ))}
         </div>
       )}

@@ -11,16 +11,19 @@ import type { PlantOut } from '../services/api'
 
 export default function HomePage() {
   const [trending, setTrending] = useState<PlantOut | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getTrending().then((plants) => {
-      if (plants.length > 0) setTrending(plants[0])
-    })
+    getTrending()
+      .then((plants) => {
+        if (plants.length > 0) setTrending(plants[0])
+      })
+      .finally(() => setLoading(false))
   }, [])
 
   return (
     <main className="pt-[110px] max-sm:pt-20">
-      <HeroSection heroImg={IMAGES.HERO_PLANT} plant={trending ?? undefined} />
+      <HeroSection heroImg={IMAGES.HERO_PLANT} plant={trending ?? undefined} loading={loading} />
       <div id="trending-trigger">
         <TrendingPlants bagIcon={IMAGES.BAG_ICON} />
       </div>

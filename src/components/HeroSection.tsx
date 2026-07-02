@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import StarRating from './StarRating'
+import GlassCardSkeleton from './GlassCardSkeleton'
 import type { PlantOut } from '../services/api'
 
 
@@ -108,9 +109,10 @@ function GlassCard({ img, alt, category, name }: GlassCardProps) {
 interface HeroSectionProps {
   heroImg: string
   plant?: PlantOut
+  loading?: boolean
 }
 
-export default function HeroSection({ heroImg, plant }: HeroSectionProps) {
+export default function HeroSection({ heroImg, plant, loading }: HeroSectionProps) {
   const navigate = useNavigate()
   const p = plant ?? FALLBACK_PLANT
   return (
@@ -144,12 +146,16 @@ export default function HeroSection({ heroImg, plant }: HeroSectionProps) {
         />
       </div>
 
-      <GlassCard
-        img={p.image_url ?? heroImg}
-        alt={p.name ?? 'Plant'}
-        category={p.category}
-        name={p.name}
-      />
+      {loading ? (
+        <GlassCardSkeleton />
+      ) : (
+        <GlassCard
+          img={p.image_url || heroImg}
+          alt={p.name ?? 'Plant'}
+          category={p.category}
+          name={p.name}
+        />
+      )}
     </section>
   )
 }

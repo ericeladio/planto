@@ -4,6 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { getNewArrivals, toPlantFrontend } from '../services/api'
 import type { Plant } from '../types'
+import Skeleton from './Skeleton'
 
 interface BestO2SectionProps {
   arrowLeft: string
@@ -35,7 +36,30 @@ export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionPr
     onSelect()
   }, [emblaApi])
 
-  if (loading || plants.length === 0) return null
+  if (loading || plants.length === 0) {
+    if (loading) {
+      return (
+        <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20 max-sm:px-5 max-sm:pb-15">
+          <div className="flex items-center gap-5 max-lg:justify-center">
+            <Skeleton variant="rect" width={70} height={107} className="rounded-none border-none" />
+            <Skeleton variant="text" width={200} height={55} />
+            <Skeleton variant="rect" width={70} height={107} className="rounded-none border-none" />
+          </div>
+          <div className="rounded-[92px] border-3 border-white/44 bg-white/5 backdrop-blur-[20px] flex items-center min-h-[480px] overflow-visible max-lg:flex-col max-lg:rounded-[40px] max-lg:p-10">
+            <Skeleton variant="rect" className="w-[clamp(300px,38vw,580px)] aspect-square rounded-3xl -ml-[5%] -mt-15 -mb-5 max-lg:w-[min(320px,70vw)] max-lg:m-0" />
+            <div className="flex-1 min-w-0 px-[clamp(32px,5vw,80px)] py-12 pl-[clamp(24px,3vw,48px)] flex flex-col gap-7 z-2 max-lg:p-6 max-lg:items-center max-lg:text-center">
+              <Skeleton variant="text" width="50%" height={32} />
+              <Skeleton variant="text" className="w-full" height={24} />
+              <Skeleton variant="text" className="w-full" height={24} />
+              <Skeleton variant="text" width="30%" height={32} />
+              <Skeleton variant="rect" className="rounded-xl" width={221} height={64} />
+            </div>
+          </div>
+        </section>
+      )
+    }
+    return null
+  }
 
   return (
     <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20 max-sm:px-5 max-sm:pb-15">

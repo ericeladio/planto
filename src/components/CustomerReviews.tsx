@@ -3,6 +3,7 @@ import { getBestReviews, toReviewFrontend } from '../services/api'
 import type { Review } from '../types'
 import SectionHeader from './SectionHeader'
 import ReviewCard from './ReviewCard'
+import ReviewCardSkeleton from './ReviewCardSkeleton'
 
 export default function CustomerReviews() {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -23,7 +24,7 @@ export default function CustomerReviews() {
       {loading && (
         <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[400px] max-sm:mx-auto">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-[40px] bg-white/5 animate-pulse h-[200px]" />
+            <ReviewCardSkeleton key={i} />
           ))}
         </div>
       )}
