@@ -1,9 +1,14 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useState, type FormEvent } from 'react'
+import { subscribeNewsletter } from '../services/api'
 
 export default function Footer() {
   const navigate = useNavigate()
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
 
   function scrollToTop() {
     if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -12,6 +17,21 @@ export default function Footer() {
 
   function goToMarket() {
     navigate('/market')
+  }
+
+  async function handleSubscribe(e: FormEvent) {
+    e.preventDefault()
+    if (!email.trim()) return
+    setStatus('loading')
+    try {
+      const res = await subscribeNewsletter(email.trim())
+      setMessage(res.message)
+      setStatus('success')
+      setEmail('')
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Something went wrong')
+      setStatus('error')
+    }
   }
 
   return (
@@ -41,16 +61,29 @@ export default function Footer() {
         <div>
           <h4 className="text-[clamp(20px,1.8vw,28px)] font-extrabold text-white mb-5">For Every Update.</h4>
           <div className="mb-6">
-            <div className="flex border-2 border-white rounded-lg overflow-hidden max-sm:flex-col">
+            <form onSubmit={handleSubscribe} className="flex border-2 border-white rounded-lg overflow-hidden max-sm:flex-col">
               <input
                 type="email"
                 placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 bg-transparent border-none outline-none px-6 py-[18px] text-[clamp(16px,1.4vw,24px)] font-medium text-white/75 font-[inherit]"
+                disabled={status === 'loading'}
               />
-              <button className="bg-white border-none px-6 text-[clamp(14px,1.1vw,22px)] font-bold text-black cursor-pointer uppercase font-[inherit] whitespace-nowrap transition-opacity hover:opacity-85 max-sm:px-4 max-sm:py-4">
-                SUBSCRIBE
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="bg-white border-none px-6 text-[clamp(14px,1.1vw,22px)] font-bold text-black cursor-pointer uppercase font-[inherit] whitespace-nowrap transition-opacity hover:opacity-85 disabled:opacity-50 max-sm:px-4 max-sm:py-4"
+              >
+                {status === 'loading' ? 'SENDING...' : 'SUBSCRIBE'}
               </button>
-            </div>
+            </form>
+            {status === 'success' && (
+              <p className="text-[#55B000] text-sm mt-2">{message}</p>
+            )}
+            {status === 'error' && (
+              <p className="text-red-400 text-sm mt-2">{message}</p>
+            )}
           </div>
           <p className="text-[clamp(16px,1.4vw,24px)] font-medium text-white">planto &copy; all right reserve</p>
         </div>

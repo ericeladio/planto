@@ -333,3 +333,12 @@ export function getBlogPosts(): Promise<BlogListResponse> {
 export function getBlogPost(slug: string): Promise<BlogPostOut> {
   return request<BlogPostOut>(`/api/blog/${slug}`)
 }
+
+// ─── Newsletter ───────────────────────────────────────────────────────────────
+
+export function subscribeNewsletter(email: string): Promise<{ message: string }> {
+  return request<{ message: string }>('/api/newsletter/subscribe', {
+    method: 'POST',
+    body: { email },
+  })
+}
