@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { getNewArrivals, toPlantFrontend } from '../services/api'
@@ -12,7 +12,6 @@ interface BestO2SectionProps {
 }
 
 export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionProps) {
-  const navigate = useNavigate()
   const [plants, setPlants] = useState<Plant[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -99,18 +98,19 @@ export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionPr
                 <img
                   src={plant.img}
                   alt={plant.name}
+                  loading="lazy"
                   className="relative w-[clamp(300px,38vw,580px)] h-auto object-contain shrink-0 -ml-[5%] -mt-15 -mb-5 z-2 pointer-events-none drop-shadow-[0_-60px_80px_rgba(0,0,0,0.17)_0_-20px_33px_rgba(0,0,0,0.12)] max-lg:w-[min(320px,70vw)] max-lg:m-0"
                 />
                 <div className="flex-1 min-w-0 px-[clamp(32px,5vw,80px)] py-12 pl-[clamp(24px,3vw,48px)] flex flex-col gap-7 z-2 max-lg:p-6 max-lg:items-center max-lg:text-center">
-                  <h3 className="text-[clamp(22px,2.4vw,38px)] font-semibold text-white/75 leading-[1.3]">{plant.name}</h3>
+                  <h2 className="text-[clamp(22px,2.4vw,38px)] font-semibold text-white/75 leading-[1.3]">{plant.name}</h2>
                   <p className="text-[clamp(15px,1.4vw,28px)] font-semibold text-white/75 leading-[1.5]">{plant.desc}</p>
                   <span className="text-[clamp(22px,2.4vw,38px)] font-semibold text-white/75">{plant.price}</span>
-                  <button
-                    onClick={() => plant.slug && navigate(`/plant/${plant.slug}`)}
-                    className="inline-flex items-center justify-center w-fit min-w-[221px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 opacity-75 max-lg:mx-auto max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]"
+                  <Link
+                    to={plant.slug ? `/plant/${plant.slug}` : '#'}
+                    className="inline-flex items-center justify-center w-fit min-w-[221px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 opacity-75 max-lg:mx-auto max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px] no-underline"
                   >
                     Explore
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

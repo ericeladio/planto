@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 import { resetPassword } from '../services/api'
+import SEOHead from '../components/SEOHead'
+import { resetPasswordSchema } from '../lib/validations'
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams()
@@ -8,6 +10,7 @@ export default function ResetPasswordPage() {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({})
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -15,15 +18,16 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-
-    if (password !== confirm) {
-      setError('Passwords do not match')
+    setFieldErrors({})
+    const result = resetPasswordSchema.safeParse({ password, confirm })
+    if (!result.success) {
+      setFieldErrors(result.error.flatten().fieldErrors)
       return
     }
 
     setLoading(true)
     try {
-      await resetPassword(token, password)
+      await resetPassword(token, result.data.password)
       setSuccess(true)
       setTimeout(() => navigate('/login'), 2000)
     } catch (err) {
@@ -35,25 +39,34 @@ export default function ResetPasswordPage() {
 
   if (!token) {
     return (
-      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
-        <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8 text-center">
-          <h1 className="text-3xl font-semibold text-white mb-4">Invalid link</h1>
-          <p className="text-white/50 mb-6">
-            This reset link is invalid or has expired.
-          </p>
-          <Link
-            to="/forgot-password"
-            className="inline-block w-full h-12 leading-[48px] rounded-xl bg-white text-[#0d1a0d] font-semibold text-base hover:opacity-90 transition-opacity"
-          >
-            Request a new link
-          </Link>
-        </div>
-      </section>
+      <>
+        <SEOHead title="Invalid Reset Link" canonicalPath="/reset-password" />
+        <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8 text-center">
+            <h1 className="text-3xl font-semibold text-white mb-4">Invalid link</h1>
+            <p className="text-white/50 mb-6">
+              This reset link is invalid or has expired.
+            </p>
+            <Link
+              to="/forgot-password"
+              className="inline-block w-full h-12 leading-[48px] rounded-xl bg-white text-[#0d1a0d] font-semibold text-base hover:opacity-90 transition-opacity"
+            >
+              Request a new link
+            </Link>
+          </div>
+        </section>
+      </>
     )
   }
 
   return (
-    <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
+    <>
+      <SEOHead
+        title="Set New Password"
+        description="Set a new password for your Planto account."
+        canonicalPath="/reset-password"
+      />
+      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8">
         <h1 className="text-3xl font-semibold text-white mb-2">New password</h1>
         <p className="text-white/50 mb-8">Choose a new password for your account.</p>
@@ -77,10 +90,9 @@ export default function ResetPasswordPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              required
-              minLength={6}
               className="h-12 px-4 rounded-xl bg-white/5 border border-white/20 text-white placeholder-white/40 outline-none focus:border-white/40 transition-colors font-[inherit]"
             />
+            {fieldErrors.password && <p className="text-red-400 text-xs">{fieldErrors.password[0]}</p>}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -91,10 +103,9 @@ export default function ResetPasswordPage() {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"
-              required
-              minLength={6}
               className="h-12 px-4 rounded-xl bg-white/5 border border-white/20 text-white placeholder-white/40 outline-none focus:border-white/40 transition-colors font-[inherit]"
             />
+            {fieldErrors.confirm && <p className="text-red-400 text-xs">{fieldErrors.confirm[0]}</p>}
           </div>
 
           <button
@@ -107,5 +118,6 @@ export default function ResetPasswordPage() {
         </form>
       </div>
     </section>
+    </>
   )
 }

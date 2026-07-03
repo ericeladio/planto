@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/StarRating'
+import SEOHead from '../components/SEOHead'
 import { ALL_PLANTS } from '../data/plants'
 import { getPlantId } from '../utils/plantId'
 import Footer from '../components/Footer'
@@ -37,6 +38,11 @@ export default function MarketPage() {
 
   return (
     <>
+      <SEOHead
+        title="Buy Indoor Plants Online"
+        description="Browse our collection of premium indoor plants. Shop trending houseplants, top sellers, and botanical decor with fast delivery."
+        canonicalPath="/market"
+      />
       <section className="pt-[150px] px-[7.5vw] pb-20 max-sm:pt-[120px] max-sm:px-5 max-sm:pb-15">
       <h1 className="text-[clamp(32px,3.4vw,55px)] font-semibold text-white mb-8">Plants Market</h1>
 
@@ -70,23 +76,22 @@ export default function MarketPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {paginated.map((plant, i) => (
-          <article
+          <Link
             key={i}
-            onClick={() => {
-              if (plant.slug) navigate(`/plant/${plant.slug}`)
-            }}
-            className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] overflow-hidden transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] cursor-pointer"
+            to={plant.slug ? `/plant/${plant.slug}` : '#'}
+            className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] overflow-hidden transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] no-underline block"
           >
             <div className="relative pt-[75%] overflow-hidden">
               <img
                 src={plant.img}
                 alt={plant.name}
+                loading="lazy"
                 className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-110"
               />
             </div>
 
             <div className="p-5 flex flex-col gap-3">
-              <h3 className="text-lg font-semibold text-white truncate">{plant.name}</h3>
+              <h2 className="text-lg font-semibold text-white truncate">{plant.name}</h2>
               <p className="text-sm text-white/60 leading-[1.4] line-clamp-2">{plant.desc}</p>
 
               {plant.rating && <StarRating rating={plant.rating} size={18} />}
@@ -108,7 +113,7 @@ export default function MarketPage() {
                 </button>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
 

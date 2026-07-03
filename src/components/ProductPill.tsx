@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import type { ProductPillData } from '../types'
@@ -42,6 +42,7 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
           <img
             src={data.img}
             alt={data.imgAlt}
+            loading="lazy"
             className="w-full h-auto object-contain block drop-shadow-[0_27px_80px_rgba(0,0,0,0.24)]"
           />
         </div>
@@ -53,13 +54,13 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
           : 'pr-[clamp(40px,5vw,100px)] max-lg:p-0 max-lg:px-4 max-lg:items-center max-lg:text-center'
         }`}
       >
-        <h3 className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{data.title}</h3>
+        <h2 className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{data.title}</h2>
         <p className="text-[clamp(14px,1.2vw,20px)] font-semibold text-white leading-[1.5] max-w-[50ch]">{data.desc}</p>
         <span className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{data.price}</span>
         <div className="flex items-center gap-4 max-lg:justify-center">
-          <button onClick={() => navigate(`/plant/${data.slug}`)} className="inline-flex items-center justify-center w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 max-sm:w-[160px] max-sm:text-xl max-sm:h-[52px]">
+          <Link to={`/plant/${data.slug}`} className="inline-flex items-center justify-center w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 no-underline max-sm:w-[160px] max-sm:text-xl max-sm:h-[52px]">
             Explore
-          </button>
+          </Link>
           <button
             onClick={handleAddToCart}
             className="inline-flex items-center justify-center w-16 h-16 border-2 border-white rounded-xl bg-transparent cursor-pointer transition-[background] hover:bg-white/8" aria-label="Add to bag"
@@ -74,6 +75,7 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
           <img
             src={data.img}
             alt={data.imgAlt}
+            loading="lazy"
             className="w-full h-auto object-contain block drop-shadow-[0_27px_80px_rgba(0,0,0,0.24)]"
           />
         </div>

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import StarRating from './StarRating'
@@ -113,22 +113,21 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ heroImg, plant, loading }: HeroSectionProps) {
-  const navigate = useNavigate()
   const p = plant ?? FALLBACK_PLANT
   return (
     <section className="flex items-start gap-[clamp(32px,4vw,80px)] px-[7.5vw] pb-20 pt-10 max-lg:flex-col max-lg:items-center max-lg:pb-15">
       <div className="flex-1 min-w-0 pt-15 max-lg:pt-5 max-lg:text-center">
         <h1 className="text-[clamp(52px,7.5vw,118px)] font-semibold leading-[1.05] opacity-75 mb-7 max-sm:text-[42px]">
-          Breath Natureal
+          Breathe Natural
         </h1>
         <p className="text-[clamp(16px,1.4vw,23px)] font-medium opacity-75 leading-[1.5] max-w-[56ch] mb-11 max-lg:max-w-full">
           From root to petal, leaf to bloom — let nature breathe new life into every room.
         </p>
 
         <div className="flex items-center gap-8 mb-14 flex-wrap max-lg:justify-center">
-          <button onClick={() => navigate('/market')} className="inline-flex items-center justify-center min-w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
+          <Link to="/market" className="inline-flex items-center justify-center min-w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 no-underline max-sm:min-w-[160px] max-sm:text-xl max-sm:h-[52px]">
             Explore
-          </button>
+          </Link>
           <button className="flex items-center gap-[18px] bg-transparent border-none text-white/75 text-xl font-normal cursor-pointer font-[inherit]">
             <span className="flex items-center justify-center w-16 h-16 border-2 border-white/75 rounded-full shrink-0 transition-[background] hover:bg-white/8">
               <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true">

@@ -1,3 +1,5 @@
+import SEOHead from '../components/SEOHead'
+
 interface PrivacySection {
   title: string
   content: string
@@ -48,7 +50,13 @@ const sections: PrivacySection[] = [
 
 export default function PrivacyPage() {
   return (
-    <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 max-sm:pb-15 max-w-4xl mx-auto">
+    <>
+      <SEOHead
+        title="Privacy Policy"
+        description="Planto's privacy policy. Learn how we collect, use, and protect your personal information."
+        canonicalPath="/privacy"
+      />
+      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 max-sm:pb-15 max-w-4xl mx-auto">
       <h1 className="text-[clamp(32px,3.4vw,55px)] font-semibold text-white mb-2">Privacy Policy</h1>
       <p className="text-white/40 text-sm mb-12">Last updated: June 24, 2026</p>
 
@@ -63,5 +71,6 @@ export default function PrivacyPage() {
         ))}
       </div>
     </section>
+    </>
   )
 }

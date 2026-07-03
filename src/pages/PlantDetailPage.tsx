@@ -3,6 +3,7 @@ import { ALL_PLANTS } from '../data/plants'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/StarRating'
+import SEOHead from '../components/SEOHead'
 import { getPlantId } from '../utils/plantId'
 
 export default function PlantDetailPage() {
@@ -23,15 +24,18 @@ export default function PlantDetailPage() {
 
   if (!plant) {
     return (
-      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 text-center">
-        <h1 className="text-2xl text-white mb-4">Plant not found</h1>
-        <button
-          onClick={() => navigate('/market')}
-          className="text-white/60 hover:text-white underline bg-transparent border-none cursor-pointer font-[inherit]"
-        >
-          Back to Market
-        </button>
-      </section>
+      <>
+        <SEOHead title="Plant Not Found" canonicalPath={`/plant/${slug}`} />
+        <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 text-center">
+          <h1 className="text-2xl text-white mb-4">Plant not found</h1>
+          <button
+            onClick={() => navigate('/market')}
+            className="text-white/60 hover:text-white underline bg-transparent border-none cursor-pointer font-[inherit]"
+          >
+            Back to Market
+          </button>
+        </section>
+      </>
     )
   }
 
@@ -44,7 +48,37 @@ export default function PlantDetailPage() {
   ].filter((d) => d.value)
 
   return (
-    <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5">
+    <>
+      <SEOHead
+        title={plant.name}
+        description={plant.desc || `Buy ${plant.name} at Planto. Premium indoor plant with fast delivery.`}
+        canonicalPath={`/plant/${plant.slug}`}
+        image={plant.img}
+        type="product"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: plant.name,
+          image: plant.img,
+          description: plant.desc,
+          brand: { '@type': 'Brand', name: 'Planto' },
+          offers: {
+            '@type': 'Offer',
+            price: plant.price.replace(/[^0-9.]/g, ''),
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: `https://planto.com/plant/${plant.slug}`,
+          },
+          ...(plant.rating ? {
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: String(plant.rating),
+              reviewCount: '1',
+            },
+          } : {}),
+        }}
+      />
+      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5">
       <div className="max-w-5xl mx-auto">
         <button
           onClick={() => navigate('/market')}
@@ -95,5 +129,6 @@ export default function PlantDetailPage() {
         </div>
       </div>
     </section>
+    </>
   )
 }

@@ -6,6 +6,7 @@ import TopSelling from '../components/TopSelling'
 import CustomerReviews from '../components/CustomerReviews'
 import BestO2Section from '../components/BestO2Section'
 import Footer from '../components/Footer'
+import SEOHead, { organizationSchema, websiteSchema } from '../components/SEOHead'
 import { getTrending } from '../services/api'
 import type { PlantOut } from '../services/api'
 
@@ -22,7 +23,14 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main className="pt-[110px] max-sm:pt-20">
+    <>
+      <SEOHead
+        title="Indoor Plants & Botanical Shop"
+        description="Premium indoor plants, botanical decor, and plant care essentials. Breathe new life into every room with Planto."
+        canonicalPath="/"
+        structuredData={[organizationSchema, websiteSchema]}
+      />
+      <main className="pt-[110px] max-sm:pt-20">
       <HeroSection heroImg={IMAGES.HERO_PLANT} plant={trending ?? undefined} loading={loading} />
       <div id="trending-trigger">
         <TrendingPlants bagIcon={IMAGES.BAG_ICON} />
@@ -32,5 +40,6 @@ export default function HomePage() {
       <BestO2Section arrowLeft={IMAGES.ARROW_LEFT} arrowRight={IMAGES.ARROW_RIGHT} />
       <Footer />
     </main>
+    </>
   )
 }

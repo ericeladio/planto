@@ -1,30 +1,25 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useState, type FormEvent } from 'react'
 import { subscribeNewsletter } from '../services/api'
+import { newsletterSchema } from '../lib/validations'
 
 export default function Footer() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const isHome = location.pathname === '/'
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
-
-  function scrollToTop() {
-    if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
-    else navigate('/')
-  }
-
-  function goToMarket() {
-    navigate('/market')
-  }
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({})
 
   async function handleSubscribe(e: FormEvent) {
     e.preventDefault()
-    if (!email.trim()) return
+    setFieldErrors({})
+    const result = newsletterSchema.safeParse({ email })
+    if (!result.success) {
+      setFieldErrors(result.error.flatten().fieldErrors)
+      return
+    }
     setStatus('loading')
     try {
-      const res = await subscribeNewsletter(email.trim())
+      const res = await subscribeNewsletter(result.data.email.trim())
       setMessage(res.message)
       setStatus('success')
       setEmail('')
@@ -44,17 +39,17 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-[clamp(20px,1.8vw,28px)] font-extrabold text-white mb-5">Quick Link's</h4>
+          <h4 className="text-[clamp(20px,1.8vw,28px)] font-extrabold text-white mb-5">Quick Links</h4>
           <nav className="flex flex-col gap-4">
-            <button onClick={scrollToTop} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+            <Link to="/" className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">
               Home
-            </button>
-            <button onClick={goToMarket} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
-              Type's Of plant's
-            </button>
-            <button onClick={() => navigate('/privacy')} className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75 cursor-pointer font-[inherit]">
+            </Link>
+            <Link to="/market" className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">
+              Types of Plants
+            </Link>
+            <Link to="/privacy" className="bg-transparent border-none p-0 text-left text-[clamp(16px,1.4vw,24px)] font-medium text-white no-underline transition-opacity hover:opacity-75">
               Privacy
-            </button>
+            </Link>
           </nav>
         </div>
 
@@ -78,6 +73,9 @@ export default function Footer() {
                 {status === 'loading' ? 'SENDING...' : 'SUBSCRIBE'}
               </button>
             </form>
+            {fieldErrors.email && (
+              <p className="text-red-400 text-sm mt-2">{fieldErrors.email[0]}</p>
+            )}
             {status === 'success' && (
               <p className="text-[#55B000] text-sm mt-2">{message}</p>
             )}

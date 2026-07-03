@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { BLOG_POSTS } from '../data/blog'
+import SEOHead from '../components/SEOHead'
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -9,20 +10,41 @@ export default function BlogPostPage() {
 
   if (!post) {
     return (
-      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 text-center">
-        <h1 className="text-2xl text-white mb-4">Post not found</h1>
-        <button
-          onClick={() => navigate('/blog')}
-          className="text-white/60 hover:text-white underline bg-transparent border-none cursor-pointer font-[inherit]"
-        >
-          Back to Blog
-        </button>
-      </section>
+      <>
+        <SEOHead title="Post Not Found" canonicalPath={`/blog/${slug}`} />
+        <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 text-center">
+          <h1 className="text-2xl text-white mb-4">Post not found</h1>
+          <button
+            onClick={() => navigate('/blog')}
+            className="text-white/60 hover:text-white underline bg-transparent border-none cursor-pointer font-[inherit]"
+          >
+            Back to Blog
+          </button>
+        </section>
+      </>
     )
   }
 
   return (
-    <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 max-sm:pb-15">
+    <>
+      <SEOHead
+        title={post.title || 'Blog Post'}
+        description={post.excerpt || `Read about ${post.title} on the Planto blog.`}
+        canonicalPath={`/blog/${post.slug}`}
+        image={post.image ?? undefined}
+        type="article"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt,
+          image: post.image,
+          datePublished: post.date,
+          author: { '@type': 'Organization', name: 'Planto' },
+          publisher: { '@type': 'Organization', name: 'Planto' },
+        }}
+      />
+      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 max-sm:pb-15">
       <div className="max-w-3xl mx-auto">
         <button
           onClick={() => navigate('/blog')}
@@ -67,5 +89,6 @@ export default function BlogPostPage() {
         </div>
       </div>
     </section>
+    </>
   )
 }

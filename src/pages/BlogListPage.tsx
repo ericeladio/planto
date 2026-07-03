@@ -1,12 +1,16 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { BLOG_POSTS } from '../data/blog'
+import SEOHead from '../components/SEOHead'
 import Footer from '../components/Footer'
 
 export default function BlogListPage() {
-  const navigate = useNavigate()
-
   return (
     <>
+      <SEOHead
+        title="Blog — Plant Care Tips & Guides"
+        description="Expert plant care tips, guides, and stories from the Planto community. Learn how to keep your indoor plants thriving."
+        canonicalPath="/blog"
+      />
       <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 max-sm:pb-15">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-[clamp(32px,3.4vw,55px)] font-semibold text-white mb-3">Blog</h1>
@@ -22,6 +26,7 @@ export default function BlogListPage() {
                   <img
                     src={post.image}
                     alt={post.title || 'Blog post'}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
@@ -36,12 +41,12 @@ export default function BlogListPage() {
                   <p className="text-white/60 leading-[1.6] line-clamp-3">
                     {post.excerpt || 'No content yet. Edit this post to add your story.'}
                   </p>
-                  <button
-                    onClick={() => navigate(`/blog/${post.slug}`)}
-                    className="self-start mt-2 px-5 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className="self-start mt-2 px-5 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity no-underline"
                   >
                     Read More
-                  </button>
+                  </Link>
                 </div>
               </article>
             ))}

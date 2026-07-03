@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import type { UserOut } from '../services/api'
@@ -63,14 +63,14 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
         >
           Home
         </button>
-        <button
-          onClick={() => navigate('/market')}
-          className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap ${
+        <Link
+          to="/market"
+          className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap no-underline ${
             !isHome ? 'text-white' : 'text-white/60 hover:text-white'
           }`}
         >
           Plants Type
-        </button>
+        </Link>
 
         <button
           onClick={() => {
@@ -88,14 +88,14 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
         >
           Contact
         </button>
-        <button
-          onClick={() => navigate('/blog')}
-          className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap ${
+        <Link
+          to="/blog"
+          className={`bg-transparent border-none p-0 cursor-pointer text-[clamp(16px,1.4vw,24px)] font-medium whitespace-nowrap no-underline ${
             location.pathname.startsWith('/blog') ? 'text-white' : 'text-white/60 hover:text-white'
           }`}
         >
           Blog
-        </button>
+        </Link>
       </nav>
 
       <div className="flex items-center gap-4 shrink-0">
@@ -126,12 +126,12 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
             )}
           </div>
         ) : (
-          <button onClick={() => navigate('/login')} className="bg-transparent border-none p-0 cursor-pointer">
+          <Link to="/login" className="bg-transparent border-none p-0 cursor-pointer no-underline">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
-          </button>
+          </Link>
         )}
 
         <button onClick={onCartClick} className="relative bg-transparent border-none p-0 cursor-pointer">

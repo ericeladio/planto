@@ -1,19 +1,28 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { forgotPassword } from '../services/api'
+import SEOHead from '../components/SEOHead'
+import { forgotPasswordSchema } from '../lib/validations'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({})
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setFieldErrors({})
+    const result = forgotPasswordSchema.safeParse({ email })
+    if (!result.success) {
+      setFieldErrors(result.error.flatten().fieldErrors)
+      return
+    }
     setLoading(true)
     try {
-      await forgotPassword(email)
+      await forgotPassword(result.data.email)
       setSent(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al enviar el correo')
@@ -23,7 +32,13 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
+    <>
+      <SEOHead
+        title="Reset Password"
+        description="Reset your Planto account password. Enter your email to receive a reset link."
+        canonicalPath="/forgot-password"
+      />
+      <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8">
         <h1 className="text-3xl font-semibold text-white mb-2">Reset password</h1>
         <p className="text-white/50 mb-8">
@@ -57,9 +72,9 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  required
                   className="h-12 px-4 rounded-xl bg-white/5 border border-white/20 text-white placeholder-white/40 outline-none focus:border-white/40 transition-colors font-[inherit]"
                 />
+                {fieldErrors.email && <p className="text-red-400 text-xs">{fieldErrors.email[0]}</p>}
               </div>
 
               <button
@@ -80,5 +95,6 @@ export default function ForgotPasswordPage() {
         )}
       </div>
     </section>
+    </>
   )
 }
