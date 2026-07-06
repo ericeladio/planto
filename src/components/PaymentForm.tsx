@@ -127,7 +127,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
     }
 
     const payload = { type: 'new' as const, ...result.data }
-    console.log('PAYLOAD ENVIADO:', JSON.stringify(payload, null, 2))
+    console.log('PAYLOAD SENT:', JSON.stringify(payload, null, 2))
     console.log('card_number length:', payload.card_number?.length)
     onSubmit(payload, saveNewCard)
   }
@@ -135,13 +135,13 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div>
-        <h2 className="text-2xl font-semibold text-white mb-1">Datos de pago</h2>
-        <p className="text-white/50 text-sm">Selecciona una tarjeta o ingresa una nueva</p>
+        <h2 className="text-2xl font-semibold text-white mb-1">Payment details</h2>
+        <p className="text-white/50 text-sm">Select a card or enter a new one</p>
       </div>
 
       {!loadingCards && savedCards.length > 0 && (
         <div className="flex flex-col gap-3">
-          <span className="text-white/60 text-sm">Tarjetas guardadas</span>
+          <span className="text-white/60 text-sm">Saved cards</span>
           {savedCards.map((card) => (
             <label
               key={card.id}
@@ -192,7 +192,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
                 }}
                 className="text-white/40 hover:text-red-400 text-xs bg-transparent border-none cursor-pointer transition-colors"
               >
-                Eliminar
+                delete
               </button>
             </label>
           ))}
@@ -220,7 +220,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
               <div className="w-2.5 h-2.5 rounded-full bg-[#55B000]" />
             )}
           </div>
-          <span className="text-white font-medium">Nueva tarjeta</span>
+          <span className="text-white font-medium">New card</span>
         </label>
       )}
 
@@ -246,7 +246,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
       {isNewCard && (
         <>
           <div className="flex flex-col gap-2">
-            <label htmlFor="card_number" className="text-white/60 text-sm">Número de tarjeta</label>
+            <label htmlFor="card_number" className="text-white/60 text-sm">Card number</label>
             <div className="relative">
               <input
                 id="card_number"
@@ -271,7 +271,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
 
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label htmlFor="expiry" className="text-white/60 text-sm">Expiración</label>
+              <label htmlFor="expiry" className="text-white/60 text-sm">Expiry</label>
               <input
                 id="expiry"
                 type="text"
@@ -312,7 +312,7 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
               onChange={(e) => setSaveNewCard(e.target.checked)}
               className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#55B000]"
             />
-            Guardar esta tarjeta para futuras compras
+            Save this card for future purchases
           </label>
         </>
       )}
@@ -322,11 +322,11 @@ export default function PaymentForm({ total, onSubmit, loading }: PaymentFormPro
         disabled={loading}
         className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity mt-2 disabled:opacity-50"
       >
-        {loading ? 'Procesando...' : `Pagar ${total}`}
+        {loading ? 'Processing...' : `Pay ${total}`}
       </button>
 
       <p className="text-white/30 text-xs text-center">
-        Tu información de pago está protegida y encriptada
+        Your payment information is protected and encrypted
       </p>
     </form>
   )

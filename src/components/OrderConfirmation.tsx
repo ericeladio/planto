@@ -27,21 +27,21 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
       </div>
 
       <div>
-        <h2 className="text-3xl font-semibold text-white mb-2">Pedido confirmado</h2>
+        <h2 className="text-3xl font-semibold text-white mb-2">Order confirmed</h2>
         <p className="text-white/50">
-          Gracias por tu compra. Tu pedido está siendo procesado.
+          Thank you for your purchase. Your order is being processed.
         </p>
       </div>
 
       <div className="w-full bg-white/5 rounded-2xl border border-white/10 p-6 space-y-4">
         <div className="flex justify-between text-white/75 text-sm">
-          <span>Número de pedido</span>
+          <span>Order number</span>
           <span className="text-white font-semibold">#{order.id}</span>
         </div>
         <div className="flex justify-between text-white/75 text-sm">
-          <span>Fecha</span>
+          <span>Date</span>
           <span className="text-white">
-            {new Date(order.created_at).toLocaleDateString('es-ES', {
+            {new Date(order.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -49,7 +49,7 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
           </span>
         </div>
         <div className="flex justify-between text-white/75 text-sm">
-          <span>Estado</span>
+          <span>Status</span>
           <span className="text-[#55B000] font-semibold capitalize">{order.status}</span>
         </div>
         <div className="border-t border-white/10 pt-4 flex justify-between text-white text-lg font-semibold">
@@ -59,7 +59,7 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
       </div>
 
       <div className="w-full bg-white/5 rounded-2xl border border-white/10 p-6">
-        <h3 className="text-white font-semibold mb-3">Artículos</h3>
+        <h3 className="text-white font-semibold mb-3">Items</h3>
         <div className="flex flex-col gap-3">
           {order.items.map((item) => (
             <div key={item.id} className="flex items-center gap-3">
@@ -70,7 +70,7 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
               />
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm truncate">{item.plant_name}</p>
-                <p className="text-white/50 text-xs">Cantidad: {item.quantity}</p>
+                <p className="text-white/50 text-xs">Quantity: {item.quantity}</p>
               </div>
               <span className="text-white text-sm font-medium">
                 {formatCurrency(item.plant_price * item.quantity, DEFAULT_CURRENCY)}
@@ -84,7 +84,7 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
         to="/market"
         className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base text-center border-none hover:opacity-90 transition-opacity no-underline"
       >
-        Seguir comprando
+        Continue shopping
       </Link>
     </div>
   )

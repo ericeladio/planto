@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 export const emailSchema = z
   .string()
-  .min(1, 'El email es requerido')
-  .email('Email inválido')
+  .min(1, 'Email is required')
+  .email('Invalid email')
 
 export const passwordSchema = z
   .string()
-  .min(6, 'La contraseña debe tener al menos 6 caracteres')
+  .min(6, 'Password must be at least 6 characters')
 
 export const newsletterSchema = z.object({
   email: emailSchema,
@@ -15,7 +15,7 @@ export const newsletterSchema = z.object({
 
 export const loginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, 'La contraseña es requerida'),
+  password: z.string().min(1, 'Password is required'),
 })
 
 export const registerSchema = z.object({
@@ -31,10 +31,10 @@ export const forgotPasswordSchema = z.object({
 export const resetPasswordSchema = z
   .object({
     password: passwordSchema,
-    confirm: z.string().min(1, 'Confirma tu contraseña'),
+    confirm: z.string().min(1, 'Confirm your password'),
   })
   .refine((data) => data.password === data.confirm, {
-    message: 'Las contraseñas no coinciden',
+    message: 'Passwords do not match',
     path: ['confirm'],
   })
 
@@ -61,21 +61,21 @@ export const paymentSchema = z
   .object({
     card_number: z
       .string()
-      .min(1, 'El número de tarjeta es requerido')
+      .min(1, 'Card number is required')
       .transform((v) => v.replace(/\s/g, ''))
-      .refine((v) => luhnCheck(v), 'Número de tarjeta inválido'),
+      .refine((v) => luhnCheck(v), 'Invalid card number'),
     exp_month: z.coerce
       .number()
-      .min(1, 'Mes inválido')
-      .max(12, 'Mes inválido'),
+      .min(1, 'Invalid month')
+      .max(12, 'Invalid month'),
     exp_year: z.coerce
       .number()
-      .min(new Date().getFullYear(), 'La tarjeta ha expirado'),
+      .min(new Date().getFullYear(), 'Card has expired'),
     cvv: z
       .string()
-      .min(3, 'CVV inválido')
-      .max(4, 'CVV inválido')
-      .regex(/^\d+$/, 'CVV debe ser numérico'),
+      .min(3, 'Invalid CVV')
+      .max(4, 'Invalid CVV')
+      .regex(/^\d+$/, 'CVV must be numeric'),
   })
   .refine(
     (data) => {
@@ -86,13 +86,13 @@ export const paymentSchema = z
       if (data.exp_year === currentYear && data.exp_month >= currentMonth) return true
       return false
     },
-    { message: 'La tarjeta ha expirado', path: ['exp_month'] },
+    { message: 'Card has expired', path: ['exp_month'] },
   )
 
 export const savedCardCvvSchema = z.object({
   cvv: z
     .string()
-    .min(3, 'CVV inválido')
-    .max(4, 'CVV inválido')
-    .regex(/^\d+$/, 'CVV debe ser numérico'),
+    .min(3, 'Invalid CVV')
+    .max(4, 'Invalid CVV')
+    .regex(/^\d+$/, 'CVV must be numeric'),
 })

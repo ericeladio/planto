@@ -10,8 +10,8 @@ export default function OrderSummary({ onProceed }: OrderSummaryProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-2xl font-semibold text-white mb-1">Resumen del pedido</h2>
-        <p className="text-white/50 text-sm">{items.length} {items.length === 1 ? 'artículo' : 'artículos'}</p>
+        <h2 className="text-2xl font-semibold text-white mb-1">Order summary</h2>
+        <p className="text-white/50 text-sm">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -25,7 +25,7 @@ export default function OrderSummary({ onProceed }: OrderSummaryProps) {
             <div className="flex-1 min-w-0 flex flex-col justify-between">
               <div>
                 <h3 className="text-white font-medium truncate">{item.name}</h3>
-                <span className="text-white/50 text-sm">Cantidad: {item.quantity}</span>
+                <span className="text-white/50 text-sm">Quantity: {item.quantity}</span>
               </div>
               <span className="text-white font-semibold">{item.price}</span>
             </div>
@@ -39,8 +39,8 @@ export default function OrderSummary({ onProceed }: OrderSummaryProps) {
           <span>{cartTotal}</span>
         </div>
         <div className="flex justify-between text-white/75 text-sm">
-          <span>Envío</span>
-          <span className="text-[#55B000]">Gratis</span>
+          <span>Shipping</span>
+          <span className="text-[#55B000]">Free</span>
         </div>
         <div className="flex justify-between text-white text-lg font-semibold pt-2 border-t border-white/10">
           <span>Total</span>
@@ -52,7 +52,7 @@ export default function OrderSummary({ onProceed }: OrderSummaryProps) {
         onClick={onProceed}
         className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity"
       >
-        Proceder al pago
+        Proceed to payment
       </button>
     </div>
   )

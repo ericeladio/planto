@@ -28,13 +28,13 @@ export default function CheckoutPage() {
         <SEOHead title="Checkout" canonicalPath="/checkout" />
         <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
           <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8 text-center">
-            <h1 className="text-3xl font-semibold text-white mb-4">Carrito vacío</h1>
-            <p className="text-white/50 mb-6">Agrega artículos a tu carrito para continuar.</p>
+            <h1 className="text-3xl font-semibold text-white mb-4">Empty cart</h1>
+            <p className="text-white/50 mb-6">Add items to your cart to continue.</p>
             <button
               onClick={() => navigate('/market')}
               className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity"
             >
-              Ir a la tienda
+              Go to shop
             </button>
           </div>
         </section>
@@ -54,7 +54,7 @@ export default function CheckoutPage() {
       setOrder(result)
       setStep('confirmation')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al procesar el pago')
+      setError(err instanceof Error ? err.message : 'Error processing payment')
     } finally {
       setLoading(false)
     }
@@ -66,11 +66,11 @@ export default function CheckoutPage() {
       <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
         <div className="w-full max-w-2xl flex flex-col gap-8">
           <div className="flex items-center justify-center gap-3 bg-[#0d1a0d]/80 backdrop-blur-sm rounded-full px-6 py-3 border border-white/10">
-            <StepIndicator num={1} label="Resumen" active={step === 'review'} done={step === 'payment' || step === 'confirmation'} />
+            <StepIndicator num={1} label="Summary" active={step === 'review'} done={step === 'payment' || step === 'confirmation'} />
             <div className="w-12 h-px bg-white/30" />
-            <StepIndicator num={2} label="Pago" active={step === 'payment'} done={step === 'confirmation'} />
+            <StepIndicator num={2} label="Payment" active={step === 'payment'} done={step === 'confirmation'} />
             <div className="w-12 h-px bg-white/30" />
-            <StepIndicator num={3} label="Confirmación" active={step === 'confirmation'} done={false} />
+            <StepIndicator num={3} label="Confirmation" active={step === 'confirmation'} done={false} />
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8">
@@ -88,7 +88,7 @@ export default function CheckoutPage() {
                   onClick={() => setStep('review')}
                   className="self-start text-white/50 hover:text-white text-sm bg-transparent border-none cursor-pointer transition-colors"
                 >
-                  &larr; Volver al resumen
+                  &larr; Back to summary
                 </button>
                 <PaymentForm total={cartTotal} onSubmit={handlePayment} loading={loading} />
               </div>
