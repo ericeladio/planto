@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import type { ProductPillData } from '../types'
 import { getPlantId } from '../utils/plantId'
+import { formatCurrency } from '../utils/formatCurrency'
 
 interface ProductPillProps {
   data: ProductPillData
@@ -20,7 +21,7 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
       navigate('/login')
       return
     }
-    addItem(getPlantId(data.slug), data.title, data.price, data.img)
+    addItem(getPlantId(data.slug), data.title, data.price, data.currency, data.img)
   }
   const ambientStyles: Record<ProductPillData['ambientClass'], string> = {
     tree: 'before:content-[""] before:absolute before:top-[-30%] before:left-[15%] before:w-[40%] before:h-[200%] before:bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(30,80,20,0.6)_0%,transparent_70%)] before:blur-[40px]',
@@ -56,7 +57,7 @@ export default function ProductPill({ data, bagIcon, reverse = false }: ProductP
       >
         <h2 className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{data.title}</h2>
         <p className="text-[clamp(14px,1.2vw,20px)] font-semibold text-white leading-[1.5] max-w-[50ch]">{data.desc}</p>
-        <span className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{data.price}</span>
+        <span className="text-[clamp(22px,2.3vw,38px)] font-semibold text-white">{formatCurrency(data.price, data.currency)}</span>
         <div className="flex items-center gap-4 max-lg:justify-center">
           <Link to={`/plant/${data.slug}`} className="inline-flex items-center justify-center w-[217px] h-16 border-2 border-white rounded-xl bg-transparent text-white text-[28px] font-medium cursor-pointer font-[inherit] transition-[background] hover:bg-white/8 no-underline max-sm:w-[160px] max-sm:text-xl max-sm:h-[52px]">
             Explore

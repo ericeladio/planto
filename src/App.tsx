@@ -13,6 +13,7 @@ import PrivacyPage from './pages/PrivacyPage'
 import BlogListPage from './pages/BlogListPage'
 import BlogPostPage from './pages/BlogPostPage'
 import PlantDetailPage from './pages/PlantDetailPage'
+import CheckoutPage from './pages/CheckoutPage'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="/blog" element={<BlogListPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/plant/:slug" element={<PlantDetailPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
           </Routes>
         </AuthProvider>

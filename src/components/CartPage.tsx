@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 interface CartPageProps {
@@ -7,6 +8,12 @@ interface CartPageProps {
 
 export default function CartPage({ isOpen, onClose }: CartPageProps) {
   const { items, cartTotal, removeItem, updateQuantity } = useCart()
+  const navigate = useNavigate()
+
+  function handleCheckout() {
+    onClose()
+    navigate('/checkout')
+  }
 
   return (
     <>
@@ -80,7 +87,10 @@ export default function CartPage({ isOpen, onClose }: CartPageProps) {
                   <span className="text-lg font-medium">Total</span>
                   <span className="text-xl font-semibold">{cartTotal}</span>
                 </div>
-                <button className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-lg cursor-pointer border-none hover:opacity-90 transition-opacity">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-lg cursor-pointer border-none hover:opacity-90 transition-opacity"
+                >
                   Checkout
                 </button>
               </div>

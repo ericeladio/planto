@@ -1,14 +1,47 @@
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { BLOG_POSTS } from '../data/blog'
+import { getBlogPost } from '../services/api'
+import type { BlogPostOut } from '../services/api'
 import SEOHead from '../components/SEOHead'
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const [post, setPost] = useState<BlogPostOut | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
-  const post = BLOG_POSTS.find((p) => p.slug === slug)
+  useEffect(() => {
+    if (!slug) return
+    setLoading(true)
+    getBlogPost(slug)
+      .then(setPost)
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false))
+  }, [slug])
 
-  if (!post) {
+  if (loading) {
+    return (
+      <>
+        <SEOHead title="Loading..." canonicalPath={`/blog/${slug}`} />
+        <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5">
+          <div className="max-w-3xl mx-auto">
+            <div className="w-24 h-4 bg-white/5 rounded animate-pulse mb-8" />
+            <div className="w-full aspect-[2/1] bg-white/5 rounded-3xl animate-pulse mb-8" />
+            <div className="w-3/4 h-8 bg-white/5 rounded animate-pulse mb-3" />
+            <div className="w-32 h-4 bg-white/5 rounded animate-pulse mb-10" />
+            <div className="flex flex-col gap-5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="w-full h-4 bg-white/5 rounded animate-pulse" />
+              ))}
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
+
+  if (notFound || !post) {
     return (
       <>
         <SEOHead title="Post Not Found" canonicalPath={`/blog/${slug}`} />
@@ -31,14 +64,14 @@ export default function BlogPostPage() {
         title={post.title || 'Blog Post'}
         description={post.excerpt || `Read about ${post.title} on the Planto blog.`}
         canonicalPath={`/blog/${post.slug}`}
-        image={post.image ?? undefined}
+        image={post.image_url ?? undefined}
         type="article"
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.excerpt,
-          image: post.image,
+          image: post.image_url,
           datePublished: post.date,
           author: { '@type': 'Organization', name: 'Planto' },
           publisher: { '@type': 'Organization', name: 'Planto' },
@@ -56,13 +89,15 @@ export default function BlogPostPage() {
           Back to Blog
         </button>
 
-        <div className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden mb-8">
-          <img
-            src={post.image}
-            alt={post.title || 'Blog post'}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </div>
+        {post.image_url && (
+          <div className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden mb-8">
+            <img
+              src={post.image_url}
+              alt={post.title || 'Blog post'}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        )}
 
         <h1 className="text-[clamp(28px,3vw,48px)] font-semibold text-white mb-3">
           {post.title || 'Untitled'}

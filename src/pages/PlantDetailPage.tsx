@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import StarRating from '../components/StarRating'
 import SEOHead from '../components/SEOHead'
 import { getPlantId } from '../utils/plantId'
+import { formatCurrency } from '../utils/formatCurrency'
 
 export default function PlantDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -17,7 +18,7 @@ export default function PlantDetailPage() {
       navigate('/login')
       return
     }
-    addItem(getPlantId(plant!.slug), plant!.name, plant!.price, plant!.img)
+    addItem(getPlantId(plant!.slug), plant!.name, plant!.price, plant!.currency, plant!.img)
   }
 
   const plant = ALL_PLANTS.find((p) => p.slug === slug)
@@ -64,8 +65,8 @@ export default function PlantDetailPage() {
           brand: { '@type': 'Brand', name: 'Planto' },
           offers: {
             '@type': 'Offer',
-            price: plant.price.replace(/[^0-9.]/g, ''),
-            priceCurrency: 'USD',
+            price: plant.price,
+            priceCurrency: plant.currency,
             availability: 'https://schema.org/InStock',
             url: `https://planto.com/plant/${plant.slug}`,
           },
@@ -104,7 +105,7 @@ export default function PlantDetailPage() {
 
             {plant.rating && <StarRating rating={plant.rating} size={24} />}
 
-            <span className="text-2xl font-bold text-white">{plant.price}</span>
+            <span className="text-2xl font-bold text-white">{formatCurrency(plant.price, plant.currency)}</span>
 
             <p className="text-white/60 leading-[1.7] text-base">{plant.desc}</p>
 

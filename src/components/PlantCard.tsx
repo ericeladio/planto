@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import type { Plant } from '../types'
 import { getPlantId } from '../utils/plantId'
+import { formatCurrency } from '../utils/formatCurrency'
 
 interface PlantCardProps {
   plant: Plant
@@ -19,7 +20,7 @@ export default function PlantCard({ plant, bagIcon }: PlantCardProps) {
       navigate('/login')
       return
     }
-    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.img)
+    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.currency, plant.img)
   }
 
   return (
@@ -33,7 +34,7 @@ export default function PlantCard({ plant, bagIcon }: PlantCardProps) {
         <h3 className="text-[clamp(20px,2.2vw,38px)] font-normal text-white/75 leading-[1.2]">{plant.name}</h3>
         <p className="text-[clamp(13px,1.1vw,20px)] font-normal text-white/75 leading-[1.5]">{plant.desc}</p>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-[clamp(20px,2.2vw,38px)] font-normal text-white/75">{plant.price}</span>
+          <span className="text-[clamp(20px,2.2vw,38px)] font-normal text-white/75">{formatCurrency(plant.price, plant.currency)}</span>
           <button
             onClick={handleAddToCart}
             className="inline-flex items-center justify-center w-[clamp(40px,3.5vw,55px)] h-[clamp(40px,3.5vw,55px)] border-2 border-white/75 rounded-xl bg-transparent cursor-pointer opacity-75 transition-[background] hover:bg-white/10 shrink-0"

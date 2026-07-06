@@ -2,7 +2,8 @@ export interface Plant {
   name: string
   slug?: string
   desc: string
-  price: string
+  price: number
+  currency: string
   img: string
   rating?: number
   category?: string
@@ -23,7 +24,8 @@ export interface ProductPillData {
   title: string
   slug: string
   desc: string
-  price: string
+  price: number
+  currency: string
   img: string
   imgAlt: string
   ambientClass: 'tree' | 'glow'

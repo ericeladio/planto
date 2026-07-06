@@ -32,6 +32,8 @@ interface GlassCardProps {
   alt: string
   category: string | null
   name: string | null
+  price: number
+  currency: string
 }
 
 const FALLBACK_PLANT = {
@@ -40,7 +42,7 @@ const FALLBACK_PLANT = {
   name: 'Calathea plant',
 }
 
-function GlassCard({ img, alt, category, name }: GlassCardProps) {
+function GlassCard({ img, alt, category, name, price, currency }: GlassCardProps) {
   const { addItem } = useCart()
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -50,7 +52,7 @@ function GlassCard({ img, alt, category, name }: GlassCardProps) {
       navigate('/login')
       return
     }
-    addItem(0, name ?? 'Plant', 'Rs. 359/-', img)
+    addItem(0, name ?? 'Plant', price, currency, img)
   }
 
   return (
@@ -153,6 +155,8 @@ export default function HeroSection({ heroImg, plant, loading }: HeroSectionProp
           alt={p.name ?? 'Plant'}
           category={p.category}
           name={p.name}
+          price={p.price}
+          currency={p.currency}
         />
       )}
     </section>

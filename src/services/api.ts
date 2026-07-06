@@ -117,6 +117,30 @@ export interface OrderOut {
   created_at: string
 }
 
+export interface PlaceOrderRequest {
+  type: 'new' | 'saved'
+  card_number?: string
+  exp_month?: number
+  exp_year?: number
+  cvv: string
+  card_id?: number
+}
+
+export interface SavedCardOut {
+  id: number
+  last_four: string
+  exp_month: number
+  exp_year: number
+  brand: string
+}
+
+export interface SaveCardRequest {
+  card_number: string
+  exp_month: number
+  exp_year: number
+  cvv: string
+}
+
 export interface BlogPostOut {
   id: number
   slug: string
@@ -141,7 +165,8 @@ export function toPlantFrontend(p: PlantOut) {
     name: p.name,
     slug: p.slug,
     desc: p.description ?? '',
-    price: `Rs. ${p.price}/-`,
+    price: p.price,
+    currency: p.currency,
     img: p.image_url,
     rating: p.rating ?? undefined,
     category: p.category ?? undefined,
@@ -316,12 +341,30 @@ export function removeFromCart(item_id: number): Promise<CartResponse> {
 
 // ─── Orders ──────────────────────────────────────────────────────────────────
 
-export function createOrder(): Promise<OrderOut> {
-  return request<OrderOut>('/api/orders', { method: 'POST', auth: true })
+export function createOrder(payment: PlaceOrderRequest): Promise<OrderOut> {
+  return request<OrderOut>('/api/orders', { method: 'POST', body: payment, auth: true })
 }
 
 export function getOrders(): Promise<OrderOut[]> {
   return request<OrderOut[]>('/api/orders', { auth: true })
+}
+
+// ─── Saved Cards ──────────────────────────────────────────────────────────
+
+export function getSavedCards(): Promise<SavedCardOut[]> {
+  return request<SavedCardOut[]>('/api/cards', { auth: true })
+}
+
+export function saveCard(payment: SaveCardRequest): Promise<SavedCardOut> {
+  return request<SavedCardOut>('/api/cards', {
+    method: 'POST',
+    body: payment,
+    auth: true,
+  })
+}
+
+export function deleteCard(cardId: number): Promise<void> {
+  return request<void>(`/api/cards/${cardId}`, { method: 'DELETE', auth: true })
 }
 
 // ─── Blog ────────────────────────────────────────────────────────────────────

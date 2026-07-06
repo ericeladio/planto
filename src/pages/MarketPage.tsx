@@ -6,6 +6,7 @@ import StarRating from '../components/StarRating'
 import SEOHead from '../components/SEOHead'
 import { ALL_PLANTS } from '../data/plants'
 import { getPlantId } from '../utils/plantId'
+import { formatCurrency } from '../utils/formatCurrency'
 import Footer from '../components/Footer'
 
 export default function MarketPage() {
@@ -25,8 +26,8 @@ export default function MarketPage() {
       result = result.filter((p) => p.name.toLowerCase().includes(q))
     }
 
-    if (sort === 'price-asc') result.sort((a, b) => parsePrice(a.price) - parsePrice(b.price))
-    else if (sort === 'price-desc') result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price))
+    if (sort === 'price-asc') result.sort((a, b) => a.price - b.price)
+    else if (sort === 'price-desc') result.sort((a, b) => b.price - a.price)
     else if (sort === 'name-asc') result.sort((a, b) => a.name.localeCompare(b.name))
     else if (sort === 'name-desc') result.sort((a, b) => b.name.localeCompare(a.name))
 
@@ -97,7 +98,7 @@ export default function MarketPage() {
               {plant.rating && <StarRating rating={plant.rating} size={18} />}
 
               <div className="flex items-center justify-between mt-1">
-                <span className="text-xl font-bold text-white">{plant.price}</span>
+                <span className="text-xl font-bold text-white">{formatCurrency(plant.price, plant.currency)}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -105,7 +106,7 @@ export default function MarketPage() {
                       navigate('/login')
                       return
                     }
-                    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.img)
+                    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.currency, plant.img)
                   }}
                   className="px-4 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
                 >
@@ -154,6 +155,3 @@ export default function MarketPage() {
   )
 }
 
-function parsePrice(price: string): number {
-  return Number(price.replace(/[^0-9.]/g, '')) || 0
-}

@@ -1,11 +1,15 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import * as api from '../services/api'
 import { useAuth } from './AuthContext'
+import { formatCurrency } from '../utils/formatCurrency'
+
+const DEFAULT_CURRENCY = 'Mx'
 
 interface CartItem {
   id: number
   name: string
-  price: string
+  price: number
+  currency: string
   img: string
   quantity: number
   plant_id: number
@@ -15,20 +19,13 @@ interface CartContextType {
   items: CartItem[]
   totalItems: number
   cartTotal: string
-  addItem: (plant_id: number, name: string, price: string, img: string) => void
+  addItem: (plant_id: number, name: string, price: number, currency: string, img: string) => void
   removeItem: (item_id: number) => void
   updateQuantity: (item_id: number, delta: number) => void
+  refreshCart: () => Promise<void>
 }
 
 const CartContext = createContext<CartContextType | null>(null)
-
-function formatPrice(price: string): number {
-  return Number(price.replace(/[^0-9.]/g, '')) || 0
-}
-
-function formatPriceOutput(raw: number): string {
-  return `Rs. ${raw.toLocaleString('en-IN')}/-`
-}
 
 function itemId(): number {
   return Date.now() + Math.floor(Math.random() * 10000)
@@ -50,7 +47,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
             res.items.map((i) => ({
               id: i.id,
               name: i.plant_name,
-              price: formatPriceOutput(i.plant_price),
+              price: i.plant_price,
+              currency: DEFAULT_CURRENCY,
               img: i.plant_image,
               quantity: i.quantity,
               plant_id: i.plant_id,
@@ -64,7 +62,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [user])
 
   const addItem = useCallback(
-    async (plant_id: number, name: string, price: string, img: string) => {
+    async (plant_id: number, name: string, price: number, currency: string, img: string) => {
       if (!user) return
       try {
         const res = await api.addToCart(plant_id, 1)
@@ -72,7 +70,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
           res.items.map((i) => ({
             id: i.id,
             name: i.plant_name,
-            price: formatPriceOutput(i.plant_price),
+            price: i.plant_price,
+            currency,
             img: i.plant_image,
             quantity: i.quantity,
             plant_id: i.plant_id,
@@ -87,7 +86,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
               item.plant_id === plant_id ? { ...item, quantity: item.quantity + 1 } : item,
             )
           }
-          return [...prev, { id: itemId(), name, price, img, quantity: 1, plant_id }]
+          return [...prev, { id: itemId(), name, price, currency, img, quantity: 1, plant_id }]
         })
       }
     },
@@ -106,7 +105,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
           res.items.map((i) => ({
             id: i.id,
             name: i.plant_name,
-            price: formatPriceOutput(i.plant_price),
+            price: i.plant_price,
+            currency: DEFAULT_CURRENCY,
             img: i.plant_image,
             quantity: i.quantity,
             plant_id: i.plant_id,
@@ -148,7 +148,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
           res.items.map((i) => ({
             id: i.id,
             name: i.plant_name,
-            price: formatPriceOutput(i.plant_price),
+            price: i.plant_price,
+            currency: DEFAULT_CURRENCY,
             img: i.plant_image,
             quantity: i.quantity,
             plant_id: i.plant_id,
@@ -171,11 +172,34 @@ export function CartProvider({ children }: { children: ReactNode }) {
   )
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
-  const rawTotal = items.reduce((sum, item) => sum + formatPrice(item.price) * item.quantity, 0)
-  const cartTotal = formatPriceOutput(rawTotal)
+  const rawTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const cartTotal = formatCurrency(rawTotal, DEFAULT_CURRENCY)
+
+  const refreshCart = useCallback(async () => {
+    if (!user) {
+      setItems([])
+      return
+    }
+    try {
+      const res = await api.getCart()
+      setItems(
+        res.items.map((i) => ({
+          id: i.id,
+          name: i.plant_name,
+          price: i.plant_price,
+          currency: DEFAULT_CURRENCY,
+          img: i.plant_image,
+          quantity: i.quantity,
+          plant_id: i.plant_id,
+        })),
+      )
+    } catch {
+      setItems([])
+    }
+  }, [user])
 
   return (
-    <CartContext.Provider value={{ items, totalItems, cartTotal, addItem, removeItem, updateQuantity }}>
+    <CartContext.Provider value={{ items, totalItems, cartTotal, addItem, removeItem, updateQuantity, refreshCart }}>
       {children}
     </CartContext.Provider>
   )
