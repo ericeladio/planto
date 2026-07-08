@@ -5,6 +5,7 @@ import BAG_ICON from './assets/icons/BAG_ICON.png'
 import CARD_BAG_ICON from './assets/icons/CARD_BAG_ICON.png'
 import ARROW_LEFT from './assets/icons/ARROW_LEFT.png'
 import ARROW_RIGHT from './assets/icons/ARROW_RIGHT.png'
+import HERO_PLANT from './assets/hero.png'
 
 export const IMAGES = {
   LOGO_PLANT,
@@ -13,6 +14,7 @@ export const IMAGES = {
   CARD_BAG_ICON,
   ARROW_LEFT,
   ARROW_RIGHT,
+  HERO_PLANT,
 } as const
 
 

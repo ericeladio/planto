@@ -40,6 +40,8 @@ const FALLBACK_PLANT = {
   image_url: '',
   category: 'Trendy House Plant',
   name: 'Calathea plant',
+  price: 0,
+  currency: 'USD',
 }
 
 function GlassCard({ img, alt, category, name, price, currency }: GlassCardProps) {
