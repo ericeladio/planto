@@ -5,16 +5,18 @@ import { createOrder, saveCard } from '../services/api'
 import type { OrderOut, PlaceOrderRequest } from '../services/api'
 import SEOHead from '../components/SEOHead'
 import OrderSummary from '../components/OrderSummary'
+import AddressStep from '../components/AddressStep'
 import PaymentForm from '../components/PaymentForm'
 import OrderConfirmation from '../components/OrderConfirmation'
 
-type Step = 'review' | 'payment' | 'confirmation'
+type Step = 'review' | 'address' | 'payment' | 'confirmation'
 
 export default function CheckoutPage() {
   const [step, setStep] = useState<Step>('review')
   const [order, setOrder] = useState<OrderOut | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [addressId, setAddressId] = useState<number | null>(null)
   const { items, cartTotal, refreshCart } = useCart()
   const navigate = useNavigate()
 
@@ -46,7 +48,6 @@ export default function CheckoutPage() {
     setError('')
     setLoading(true)
     try {
-      console.log('CREATE ORDER DATA:', JSON.stringify(data, null, 2))
       const result = await createOrder(data)
       if (shouldSave && data.type === 'new') {
         await saveCard({ card_number: data.card_number!, exp_month: data.exp_month!, exp_year: data.exp_year!, cvv: data.cvv }).catch(() => {})
@@ -66,11 +67,13 @@ export default function CheckoutPage() {
       <section className="pt-[150px] max-sm:pt-[120px] px-[7.5vw] pb-20 max-sm:px-5 flex items-start justify-center min-h-screen">
         <div className="w-full max-w-2xl flex flex-col gap-8">
           <div className="flex items-center justify-center gap-3 bg-[#0d1a0d]/80 backdrop-blur-sm rounded-full px-6 py-3 border border-white/10">
-            <StepIndicator num={1} label="Summary" active={step === 'review'} done={step === 'payment' || step === 'confirmation'} />
+            <StepIndicator num={1} label="Summary" active={step === 'review'} done={step === 'address' || step === 'payment' || step === 'confirmation'} />
             <div className="w-12 h-px bg-white/30" />
-            <StepIndicator num={2} label="Payment" active={step === 'payment'} done={step === 'confirmation'} />
+            <StepIndicator num={2} label="Address" active={step === 'address'} done={step === 'payment' || step === 'confirmation'} />
             <div className="w-12 h-px bg-white/30" />
-            <StepIndicator num={3} label="Confirmation" active={step === 'confirmation'} done={false} />
+            <StepIndicator num={3} label="Payment" active={step === 'payment'} done={step === 'confirmation'} />
+            <div className="w-12 h-px bg-white/30" />
+            <StepIndicator num={4} label="Confirmation" active={step === 'confirmation'} done={false} />
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8">
@@ -79,10 +82,10 @@ export default function CheckoutPage() {
             )}
 
             {step === 'review' && (
-              <OrderSummary onProceed={() => setStep('payment')} />
+              <OrderSummary onProceed={() => setStep('address')} />
             )}
 
-            {step === 'payment' && (
+            {step === 'address' && (
               <div className="flex flex-col gap-6">
                 <button
                   onClick={() => setStep('review')}
@@ -90,7 +93,27 @@ export default function CheckoutPage() {
                 >
                   &larr; Back to summary
                 </button>
-                <PaymentForm total={cartTotal} onSubmit={handlePayment} loading={loading} />
+                <AddressStep onProceed={(id) => { setAddressId(id); setStep('payment') }} />
+              </div>
+            )}
+
+            {step === 'payment' && (
+              <div className="flex flex-col gap-6">
+                <button
+                  onClick={() => setStep('address')}
+                  className="self-start text-white/50 hover:text-white text-sm bg-transparent border-none cursor-pointer transition-colors"
+                >
+                  &larr; Back to address
+                </button>
+                <PaymentForm
+                  total={cartTotal}
+                  onSubmit={(data, shouldSave) => {
+                    if (addressId !== null) {
+                      handlePayment({ ...data, address_id: addressId }, shouldSave)
+                    }
+                  }}
+                  loading={loading}
+                />
               </div>
             )}
 

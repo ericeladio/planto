@@ -115,6 +115,13 @@ export interface OrderOut {
   total: number
   items: CartItemOut[]
   created_at: string
+  address_street?: string | null
+  address_number?: string | null
+  address_colony?: string | null
+  address_city?: string | null
+  address_state?: string | null
+  address_zip_code?: string | null
+  address_country?: string | null
 }
 
 export interface PlaceOrderRequest {
@@ -124,6 +131,7 @@ export interface PlaceOrderRequest {
   exp_year?: number
   cvv: string
   card_id?: number
+  address_id: number
 }
 
 export interface SavedCardOut {
@@ -383,5 +391,78 @@ export function subscribeNewsletter(email: string): Promise<{ message: string }>
   return request<{ message: string }>('/api/newsletter/subscribe', {
     method: 'POST',
     body: { email },
+  })
+}
+
+// ─── Addresses ───────────────────────────────────────────────────────────────
+
+export interface AddressOut {
+  id: number
+  label: string
+  street: string
+  number: string
+  colony: string
+  city: string
+  state: string
+  zip_code: string
+  country: string
+  reference?: string | null
+  is_default: boolean
+}
+
+export interface AddressCreate {
+  label: string
+  street: string
+  number: string
+  colony: string
+  city: string
+  state: string
+  zip_code: string
+  country: string
+  reference?: string
+  is_default?: boolean
+}
+
+export interface AddressUpdate {
+  label?: string
+  street?: string
+  number?: string
+  colony?: string
+  city?: string
+  state?: string
+  zip_code?: string
+  country?: string
+  reference?: string
+  is_default?: boolean
+}
+
+export function getAddresses(): Promise<AddressOut[]> {
+  return request<AddressOut[]>('/api/addresses', { auth: true })
+}
+
+export function createAddress(data: AddressCreate): Promise<AddressOut> {
+  return request<AddressOut>('/api/addresses', {
+    method: 'POST',
+    body: data,
+    auth: true,
+  })
+}
+
+export function updateAddress(id: number, data: AddressUpdate): Promise<AddressOut> {
+  return request<AddressOut>(`/api/addresses/${id}`, {
+    method: 'PATCH',
+    body: data,
+    auth: true,
+  })
+}
+
+export function deleteAddress(id: number): Promise<void> {
+  return request<void>(`/api/addresses/${id}`, { method: 'DELETE', auth: true })
+}
+
+export function setDefaultAddress(id: number): Promise<AddressOut> {
+  return request<AddressOut>(`/api/addresses/${id}/default`, {
+    method: 'PATCH',
+    auth: true,
   })
 }

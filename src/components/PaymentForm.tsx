@@ -5,7 +5,7 @@ import type { SavedCardOut, PlaceOrderRequest } from '../services/api'
 
 interface PaymentFormProps {
   total: string
-  onSubmit: (data: PlaceOrderRequest, saveCard: boolean) => void
+  onSubmit: (data: Omit<PlaceOrderRequest, 'address_id'>, saveCard: boolean) => void
   loading: boolean
 }
 

@@ -52,7 +52,7 @@ export default function OrderSummary({ onProceed }: OrderSummaryProps) {
         onClick={onProceed}
         className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity"
       >
-        Proceed to payment
+        Continue
       </button>
     </div>
   )

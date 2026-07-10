@@ -58,6 +58,19 @@ export default function OrderConfirmation({ order }: OrderConfirmationProps) {
         </div>
       </div>
 
+      {order.address_street && (
+        <div className="w-full bg-white/5 rounded-2xl border border-white/10 p-6">
+          <h3 className="text-white font-semibold mb-3">Delivery address</h3>
+          <p className="text-white/75 text-sm">
+            {order.address_street} {order.address_number}, {order.address_colony}
+          </p>
+          <p className="text-white/50 text-sm">
+            {order.address_city}, {order.address_state} {order.address_zip_code}
+          </p>
+          <p className="text-white/50 text-sm">{order.address_country}</p>
+        </div>
+      )}
+
       <div className="w-full bg-white/5 rounded-2xl border border-white/10 p-6">
         <h3 className="text-white font-semibold mb-3">Items</h3>
         <div className="flex flex-col gap-3">
