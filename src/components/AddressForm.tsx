@@ -61,13 +61,13 @@ export default function AddressForm({ initialData, onSubmit, onCancel, loading }
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
         <h2 className="text-2xl font-semibold text-white mb-1">
-          {initialData ? 'Edit address' : 'Add address'}
+          {initialData ? 'Editar direccion' : 'Agregar direccion'}
         </h2>
-        <p className="text-white/50 text-sm">Delivery address</p>
+        <p className="text-white/50 text-sm">Direccion de entrega</p>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className={labelClass}>Label</label>
+        <label className={labelClass}>Etiqueta</label>
         <div className="flex gap-2">
           {LABELS.map((l) => (
             <button
@@ -199,7 +199,7 @@ export default function AddressForm({ initialData, onSubmit, onCancel, loading }
           onChange={(e) => setIsDefault(e.target.checked)}
           className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#55B000]"
         />
-        Use as default address
+        Usar como direccion principal
       </label>
 
       <div className="flex gap-3 mt-2">
@@ -209,7 +209,7 @@ export default function AddressForm({ initialData, onSubmit, onCancel, loading }
             onClick={onCancel}
             className="flex-1 py-3 rounded-xl bg-white/10 text-white font-semibold text-base cursor-pointer border border-white/20 hover:bg-white/15 transition-colors"
           >
-            Cancel
+            Cancelar
           </button>
         )}
         <button
@@ -217,7 +217,7 @@ export default function AddressForm({ initialData, onSubmit, onCancel, loading }
           disabled={loading}
           className="flex-1 py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity disabled:opacity-50"
         >
-          {loading ? 'Saving...' : initialData ? 'Update' : 'Save'}
+          {loading ? 'Guardando...' : initialData ? 'Actualizar' : 'Guardar'}
         </button>
       </div>
     </form>

@@ -50,8 +50,8 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <h2 className="text-2xl font-semibold text-white mb-1">Delivery address</h2>
-          <p className="text-white/50 text-sm">Loading addresses...</p>
+          <h2 className="text-2xl font-semibold text-white mb-1">Direccion de entrega</h2>
+          <p className="text-white/50 text-sm">Cargando direcciones...</p>
         </div>
       </div>
     )
@@ -64,7 +64,7 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
           onClick={() => setShowForm(false)}
           className="self-start text-white/50 hover:text-white text-sm bg-transparent border-none cursor-pointer transition-colors"
         >
-          &larr; Back to addresses
+          &larr; Volver a direcciones
         </button>
         <AddressForm
           onSubmit={handleCreateAddress}
@@ -78,8 +78,8 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-2xl font-semibold text-white mb-1">Delivery address</h2>
-        <p className="text-white/50 text-sm">Select where to deliver your order</p>
+        <h2 className="text-2xl font-semibold text-white mb-1">Direccion de entrega</h2>
+        <p className="text-white/50 text-sm">Selecciona donde entregar tu pedido</p>
       </div>
 
       {addresses.length > 0 && (
@@ -114,7 +114,7 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
                   <span className="text-white font-medium">{addr.label}</span>
                   {addr.is_default && (
                     <span className="text-[#55B000] text-xs font-semibold bg-[#55B000]/10 px-2 py-0.5 rounded">
-                      Default
+                      Principal
                     </span>
                   )}
                 </div>
@@ -142,7 +142,7 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
-        Add new address
+        Agregar nueva direccion
       </button>
 
       <button
@@ -150,7 +150,7 @@ export default function AddressStep({ onProceed }: AddressStepProps) {
         disabled={selectedId === null}
         className="w-full py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Continue to payment
+        Continuar al pago
       </button>
     </div>
   )

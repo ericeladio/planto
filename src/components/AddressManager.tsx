@@ -108,27 +108,27 @@ export default function AddressManager() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">My addresses</h2>
-          <p className="text-white/50 text-sm">Manage your delivery addresses</p>
+          <h2 className="text-2xl font-semibold text-white">Mis direcciones</h2>
+          <p className="text-white/50 text-sm">Gestiona tus direcciones de entrega</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
           className="px-4 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
         >
-          Add address
+          Agregar direccion
         </button>
       </div>
 
       {loading ? (
-        <p className="text-white/50 text-sm">Loading addresses...</p>
+        <p className="text-white/50 text-sm">Cargando direcciones...</p>
       ) : addresses.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] p-8 text-center">
-          <p className="text-white/50 mb-4">You have no saved addresses.</p>
+          <p className="text-white/50 mb-4">No tienes direcciones guardadas.</p>
           <button
             onClick={() => setShowForm(true)}
             className="px-6 py-3 rounded-xl bg-white text-[#0d1a0d] font-semibold text-base cursor-pointer border-none hover:opacity-90 transition-opacity"
           >
-            Add your first address
+            Agregar tu primera direccion
           </button>
         </div>
       ) : (
@@ -144,7 +144,7 @@ export default function AddressManager() {
                     <span className="text-white font-medium">{addr.label}</span>
                     {addr.is_default && (
                       <span className="text-[#55B000] text-xs font-semibold bg-[#55B000]/10 px-2 py-0.5 rounded">
-                        Default
+                        Principal
                       </span>
                     )}
                   </div>
@@ -165,20 +165,20 @@ export default function AddressManager() {
                       onClick={() => handleSetDefault(addr.id)}
                       className="text-white/40 hover:text-[#55B000] text-xs bg-transparent border-none cursor-pointer transition-colors"
                     >
-                      Set default
+                      Establecer principal
                     </button>
                   )}
                   <button
                     onClick={() => handleEdit(addr)}
                     className="text-white/40 hover:text-white text-xs bg-transparent border-none cursor-pointer transition-colors"
                   >
-                    Edit
+                    Editar
                   </button>
                   <button
                     onClick={() => handleDelete(addr.id)}
                     className="text-white/40 hover:text-red-400 text-xs bg-transparent border-none cursor-pointer transition-colors"
                   >
-                    Delete
+                    Eliminar
                   </button>
                 </div>
               </div>
