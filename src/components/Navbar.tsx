@@ -18,6 +18,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const isHome = location.pathname === '/'
 
@@ -32,6 +33,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
 
   useEffect(() => {
     setMenuOpen(false)
+    setMobileMenuOpen(false)
   }, [location])
 
   return (
@@ -51,6 +53,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
         <span className="text-2xl font-black opacity-75">Planto.</span>
       </button>
 
+      {/* Desktop nav */}
       <nav className="flex items-center gap-[clamp(24px,3.5vw,54px)] mx-auto opacity-75 max-sm:hidden">
         <button
           onClick={() => {
@@ -98,6 +101,28 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
         </Link>
       </nav>
 
+      {/* Hamburger button - mobile only */}
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="hidden max-sm:flex items-center justify-center w-11 h-11 bg-transparent border-none cursor-pointer ml-auto mr-2"
+        aria-label="Toggle menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {mobileMenuOpen ? (
+            <>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </>
+          ) : (
+            <>
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </>
+          )}
+        </svg>
+      </button>
+
       <div className="flex items-center gap-4 shrink-0">
         {loading ? (
           <div className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white animate-spin" />
@@ -105,7 +130,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
           <div className="relative">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="bg-transparent border-none p-0 cursor-pointer"
+              className="flex items-center justify-center w-11 h-11 bg-transparent border-none p-0 cursor-pointer"
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#55B000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -126,7 +151,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
             )}
           </div>
         ) : (
-          <Link to="/login" className="bg-transparent border-none p-0 cursor-pointer no-underline">
+          <Link to="/login" className="flex items-center justify-center w-11 h-11 bg-transparent border-none p-0 cursor-pointer no-underline">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75 hover:opacity-100 transition-opacity">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
@@ -134,7 +159,7 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
           </Link>
         )}
 
-        <button onClick={onCartClick} className="relative bg-transparent border-none p-0 cursor-pointer">
+        <button onClick={onCartClick} className="relative flex items-center justify-center w-11 h-11 bg-transparent border-none p-0 cursor-pointer">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-75">
             <circle cx="9" cy="21" r="1" />
             <circle cx="20" cy="21" r="1" />
@@ -146,6 +171,83 @@ export default function Navbar({ logoImg, onCartClick, user, loading }: NavbarPr
             </span>
           )}
         </button>
+      </div>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 max-sm:block hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile menu drawer */}
+      <div
+        className={`fixed top-0 right-0 h-full w-72 bg-[#0d1a0d] z-50 transform transition-transform duration-300 max-sm:block hidden ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between p-5 border-b border-white/10">
+          <span className="text-lg font-bold text-white">Menu</span>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center w-11 h-11 bg-transparent border-none cursor-pointer"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <nav className="flex flex-col p-5 gap-2">
+          <button
+            onClick={() => {
+              if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
+              else navigate('/')
+              setMobileMenuOpen(false)
+            }}
+            className={`text-left bg-transparent border-none p-3 rounded-lg text-lg font-medium cursor-pointer ${
+              isHome ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            Home
+          </button>
+          <Link
+            to="/market"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`text-left bg-transparent border-none p-3 rounded-lg text-lg font-medium cursor-pointer no-underline ${
+              location.pathname === '/market' ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            Plants Type
+          </Link>
+          <button
+            onClick={() => {
+              const footer = document.querySelector('footer')
+              if (footer) {
+                footer.scrollIntoView({ behavior: 'smooth' })
+              } else if (!isHome) {
+                navigate('/')
+                setTimeout(() => {
+                  document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' })
+                }, 300)
+              }
+              setMobileMenuOpen(false)
+            }}
+            className="text-left bg-transparent border-none p-3 rounded-lg text-lg font-medium text-white/70 hover:text-white hover:bg-white/5 cursor-pointer"
+          >
+            Contact
+          </button>
+          <Link
+            to="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`text-left bg-transparent border-none p-3 rounded-lg text-lg font-medium cursor-pointer no-underline ${
+              location.pathname.startsWith('/blog') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            Blog
+          </Link>
+        </nav>
       </div>
     </header>
   )

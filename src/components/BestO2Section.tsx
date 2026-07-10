@@ -63,7 +63,7 @@ export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionPr
   return (
     <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20 max-sm:px-5 max-sm:pb-15">
       <div className="flex items-center gap-5 max-lg:justify-center">
-        <svg width="70" height="107" viewBox="0 0 70 107" fill="none" aria-hidden="true" className="shrink-0">
+        <svg width="70" height="107" viewBox="0 0 70 107" fill="none" aria-hidden="true" className="shrink-0 max-sm:hidden">
           <path d="M0 72.204L0 83.736C0 96.439 10.298 106.736 23 106.736H69.865" stroke="url(#np-grad-left)" strokeWidth="5" strokeLinecap="round" />
           <defs>
             <linearGradient id="np-grad-left" x1="-0.51" y1="70.11" x2="71.72" y2="104.88" gradientUnits="userSpaceOnUse">
@@ -78,7 +78,7 @@ export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionPr
           New Plants
         </h2>
 
-        <svg width="70" height="107" viewBox="0 0 70 107" fill="none" aria-hidden="true" className="shrink-0">
+        <svg width="70" height="107" viewBox="0 0 70 107" fill="none" aria-hidden="true" className="shrink-0 max-sm:hidden">
           <path d="M69.865 34.532L69.865 22.999C69.865 10.297 59.567 0 46.865 0L0 0" stroke="url(#np-grad-right)" strokeWidth="5" strokeLinecap="round" />
           <defs>
             <linearGradient id="np-grad-right" x1="70.37" y1="36.625" x2="-1.863" y2="1.852" gradientUnits="userSpaceOnUse">
@@ -131,15 +131,15 @@ export default function BestO2Section({ arrowLeft, arrowRight }: BestO2SectionPr
         </div>
 
         <div className="flex items-center gap-4">
-          <button onClick={scrollPrev} className="cursor-pointer bg-transparent border-none p-0">
-            <img src={arrowLeft} alt="Previous" className="w-[25px] h-[25px] opacity-75 transition-opacity hover:opacity-100" />
+          <button onClick={scrollPrev} className="cursor-pointer bg-transparent border-none p-0 flex items-center justify-center w-11 h-11">
+            <img src={arrowLeft} alt="Previous" className="w-6 h-6 opacity-75 transition-opacity hover:opacity-100" />
           </button>
           <span className="text-white/75 font-bold">
             <span className="text-xl">{String(selectedIndex + 1).padStart(2, '0')}/</span>
             <span className="text-[15px]">{String(plants.length).padStart(2, '0')}</span>
           </span>
-          <button onClick={scrollNext} className="cursor-pointer bg-transparent border-none p-0">
-            <img src={arrowRight} alt="Next" className="w-[25px] h-[25px] opacity-75 transition-opacity hover:opacity-100" />
+          <button onClick={scrollNext} className="cursor-pointer bg-transparent border-none p-0 flex items-center justify-center w-11 h-11">
+            <img src={arrowRight} alt="Next" className="w-6 h-6 opacity-75 transition-opacity hover:opacity-100" />
           </button>
         </div>
       </div>

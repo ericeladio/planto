@@ -51,7 +51,7 @@ export default function TopSelling({ bagIcon }: TopSellingProps) {
       </div>
 
       {loading && (
-        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
+        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-full max-sm:mx-auto">
           {[1, 2, 3].map((i) => (
             <PlantCardSkeleton key={i} />
           ))}
@@ -63,7 +63,7 @@ export default function TopSelling({ bagIcon }: TopSellingProps) {
       )}
 
       {!loading && !error && (
-        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-[360px] max-sm:mx-auto">
+        <div className="grid grid-cols-3 gap-[clamp(20px,2.5vw,40px)] max-lg:grid-cols-2 max-sm:grid-cols-1 max-sm:max-w-full max-sm:mx-auto">
           {plants.map((plant, i) => (
             <PlantCard key={i} plant={plant} bagIcon={bagIcon} />
           ))}

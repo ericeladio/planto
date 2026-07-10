@@ -58,11 +58,11 @@ function GlassCard({ img, alt, category, name, price, currency }: GlassCardProps
   }
 
   return (
-    <div className="relative w-[clamp(320px,30vw,512px)] shrink-0 mt-[-20px] max-lg:w-[min(420px,90vw)] max-lg:mt-15">
+    <div className="relative w-[clamp(320px,30vw,512px)] shrink-0 mt-[-20px] max-lg:w-[min(420px,calc(100vw-40px))] max-lg:mt-15">
       <img
         src={img}
         alt={alt}
-        className="absolute top-[-15%] left-1/2 -translate-x-1/2 w-[90%] h-auto object-contain z-2 pointer-events-none max-lg:top-[-20%]"
+        className="absolute top-[-15%] left-1/2 -translate-x-1/2 w-[90%] h-auto object-contain z-2 pointer-events-none max-lg:top-[-10%]"
       />
       <div className="relative w-full aspect-[512/644] backdrop-blur-[12.5px]">
         <svg
