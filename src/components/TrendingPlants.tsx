@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 import { getTrending, toPlantFrontend } from '../services/api'
 import type { Plant } from '../types'
 import SectionHeader from './SectionHeader'
-import ProductPill from './ProductPill'
-import ProductPillSkeleton from './ProductPillSkeleton'
-import CarouselDots from './CarouselDots'
+import PlantCardUnified from './PlantCardUnified'
 
 interface TrendingPlantsProps {
   bagIcon: string
@@ -26,8 +24,11 @@ export default function TrendingPlants({ bagIcon }: TrendingPlantsProps) {
     return (
       <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20">
         <SectionHeader title="Our Trendy plants" gradientPrefix="trend" />
-        <ProductPillSkeleton />
-        <ProductPillSkeleton />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {[1, 2].map((i) => (
+            <div key={i} className="rounded-3xl border border-white/10 bg-white/5 h-[400px] animate-pulse" />
+          ))}
+        </div>
       </section>
     )
   }
@@ -43,36 +44,14 @@ export default function TrendingPlants({ bagIcon }: TrendingPlantsProps) {
 
   if (plants.length < 2) return null
 
-  const pillData1 = {
-    title: plants[0].name,
-    slug: plants[0].slug ?? '',
-    desc: plants[0].desc,
-    price: plants[0].price,
-    currency: plants[0].currency,
-    img: plants[0].img,
-    imgAlt: plants[0].name,
-    ambientClass: 'tree' as const,
-  }
-
-  const pillData2 = {
-    title: plants[1].name,
-    slug: plants[1].slug ?? '',
-    desc: plants[1].desc,
-    price: plants[1].price,
-    currency: plants[1].currency,
-    img: plants[1].img,
-    imgAlt: plants[1].name,
-    ambientClass: 'glow' as const,
-  }
-
   return (
     <section className="flex flex-col gap-10 px-[7.5vw] py-10 pb-20">
       <SectionHeader title="Our Trendy plants" gradientPrefix="trend" />
-
-      <ProductPill data={pillData1} bagIcon={bagIcon} />
-      <ProductPill data={pillData2} bagIcon={bagIcon} reverse />
-
-      <CarouselDots activeIndex={0} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {plants.map((plant, i) => (
+          <PlantCardUnified key={i} plant={plant} bagIcon={bagIcon} />
+        ))}
+      </div>
     </section>
   )
 }

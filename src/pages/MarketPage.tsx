@@ -1,18 +1,10 @@
 import { useState, useMemo } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useCart } from '../context/CartContext'
-import { useAuth } from '../context/AuthContext'
-import StarRating from '../components/StarRating'
 import SEOHead from '../components/SEOHead'
+import PlantCardUnified from '../components/PlantCardUnified'
 import { ALL_PLANTS } from '../data/plants'
-import { getPlantId } from '../utils/plantId'
-import { formatCurrency } from '../utils/formatCurrency'
 import Footer from '../components/Footer'
 
 export default function MarketPage() {
-  const { addItem } = useCart()
-  const { user } = useAuth()
-  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('')
   const [page, setPage] = useState(1)
@@ -77,44 +69,7 @@ export default function MarketPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {paginated.map((plant, i) => (
-          <Link
-            key={i}
-            to={plant.slug ? `/plant/${plant.slug}` : '#'}
-            className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-[12px] overflow-hidden transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] no-underline block"
-          >
-            <div className="relative pt-[75%] overflow-hidden">
-              <img
-                src={plant.img}
-                alt={plant.name}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-110"
-              />
-            </div>
-
-            <div className="p-5 flex flex-col gap-3">
-              <h2 className="text-lg font-semibold text-white truncate">{plant.name}</h2>
-              <p className="text-sm text-white/60 leading-[1.4] line-clamp-2">{plant.desc}</p>
-
-              {plant.rating && <StarRating rating={plant.rating} size={18} />}
-
-              <div className="flex items-center justify-between mt-1">
-                <span className="text-xl font-bold text-white">{formatCurrency(plant.price, plant.currency)}</span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (!user) {
-                      navigate('/login')
-                      return
-                    }
-                    addItem(getPlantId(plant.slug), plant.name, plant.price, plant.currency, plant.img)
-                  }}
-                  className="px-4 py-2 rounded-xl bg-white text-[#0d1a0d] text-sm font-semibold cursor-pointer border-none hover:opacity-90 transition-opacity"
-                >
-                  Add to bag
-                </button>
-              </div>
-            </div>
-          </Link>
+          <PlantCardUnified key={i} plant={plant} />
         ))}
       </div>
 
