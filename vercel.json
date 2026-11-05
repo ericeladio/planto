@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://planto-backend-a6wdgs-0bcd86-163-192-137-59.sslip.io/api/:path*"
+      "destination": "https://planto-api.planto-api-workers.workers.dev/api/:path*"
     },
     {
       "source": "/((?!assets/).*)",
